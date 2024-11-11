@@ -5,6 +5,8 @@ import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.chellrose.chellcraft.features.hat.CommandHat;
+
 public class ChellCraft implements ModInitializer {
 	public static final String MOD_ID = "chellcraft";
 
@@ -20,5 +22,8 @@ public class ChellCraft implements ModInitializer {
 		// Proceed with mild caution.
 
 		LOGGER.info("Hello Fabric world!");
+
+		// Register the hat command
+		new CommandHat();
 	}
 }
