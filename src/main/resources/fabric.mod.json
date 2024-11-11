@@ -3,34 +3,27 @@
 	"id": "chellcraft",
 	"version": "${version}",
 	"name": "ChellCraft",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Official Fabric server mod for the EFSC",
 	"authors": [
-		"Me!"
+		"Chell Rose"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/omg-shush/chellcraft/blob/main/README.md",
+		"sources": "https://github.com/omg-shush/chellcraft"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/chellcraft/icon.png",
-	"environment": "*",
+	"environment": "server",
 	"entrypoints": {
 		"main": [
 			"com.chellrose.chellcraft.ChellCraft"
-		],
-		"client": [
-			"com.chellrose.chellcraft.ChellCraftClient"
 		],
 		"fabric-datagen": [
 			"com.chellrose.chellcraft.ChellCraftDataGenerator"
 		]
 	},
 	"mixins": [
-		"chellcraft.mixins.json",
-		{
-			"config": "chellcraft.client.mixins.json",
-			"environment": "client"
-		}
+		"chellcraft.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.16.9",
@@ -38,7 +31,5 @@
 		"java": ">=21",
 		"fabric-api": "*"
 	},
-	"suggests": {
-		"another-mod": "*"
-	}
+	"suggests": {}
 }

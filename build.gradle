@@ -24,7 +24,6 @@ loom {
 	mods {
 		"chellcraft" {
 			sourceSet sourceSets.main
-			sourceSet sourceSets.client
 		}
 	}
 
