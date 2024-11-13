@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.chellrose.chellcraft.features.hat.CommandHat;
+import com.chellrose.chellcraft.features.help.CommandHelp;
 
 public class ChellCraft implements ModInitializer {
 	public static final String MOD_ID = "chellcraft";
@@ -25,5 +26,8 @@ public class ChellCraft implements ModInitializer {
 
 		// Register the hat command
 		new CommandHat();
+
+		// Register the help command
+		new CommandHelp();
 	}
 }

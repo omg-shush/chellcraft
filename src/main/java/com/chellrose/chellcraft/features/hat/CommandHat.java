@@ -13,10 +13,11 @@ import net.minecraft.text.Text;
 public class CommandHat {
 
     public static final int HELMET_ARMOR_INDEX = 39;
+    public static final String COMMAND = "hat";
 
     public CommandHat() {
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> dispatcher.register(
-            CommandManager.literal("hat").executes(context -> this.hat(context))));
+            CommandManager.literal(COMMAND).executes(context -> this.hat(context))));
     }
 
     public int hat(CommandContext<ServerCommandSource> context) {

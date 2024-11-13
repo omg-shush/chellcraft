@@ -1,6 +1,15 @@
 # ChellCraft
 Official Fabric server mod for the EFSC
 
+## Features
+
+### Hat: Put any item on your head!
+- Use /hat while holding the item in your main hand
+- If you're already wearing something on your head, it'll be swapped with your hand
+
+### Help
+- Use `/chellcraft` in-game to get a link back to this document at any time!
+
 ## In-Progress Features
 
 ### Sit: Right-click on a chair to take a seat!
@@ -8,9 +17,6 @@ Official Fabric server mod for the EFSC
 - A chair is a bottom slab or bottom stair with at least one adjacent sign or trapdoor
 - A chair must have a solid block (that you could stand on) underneath, and a non-opaque block above.
 - 1-second cooldown on sitting in a chair
-### Hat: Put any item on your head!
-- Use /hat while holding the item in your main hand
-- If you're already wearing something on your head, it'll be swapped with your hand
 ### Invisible ItemFrames & Armor Stands!
 - Shoot an invis arrow to make them invisible!
 - The ItemFrame must be filled & ArmorStand must be carrying 1 item (armor or hands) for this to work
@@ -53,9 +59,6 @@ The portion inside `Value:"<texture>"` is what you need, ie you would run the fo
 ### Carry players!
 - Right-click with empty hand on a player with a saddle in their helmet slot to ride.
 - If you're carrying a player, sneak-left-click to eject them in the direction you're looking.
-
-### Help
-- Use `/minechell` in-game to get a link back to this document at any time!
 
 ## TODO
 - [ ] tiered item despawning - more valuable items take longer
