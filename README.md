@@ -4,19 +4,20 @@ Official Fabric server mod for the EFSC
 ## Features
 
 ### Hat: Put any item on your head!
-- Use /hat while holding the item in your main hand
+- Use `/hat` while holding the item in your main hand
 - If you're already wearing something on your head, it'll be swapped with your hand
+
+### Sit: Right-click on a chair to take a seat!
+- Must use empty hand on the top-facing part of a block
+- A chair is a bottom slab, bottom stair, unlit campfire, or horizontal end rod, with at least one adjacent sign or trapdoor
+- A chair must have a non-opaque block above.
+- 1-second cooldown on sitting in a chair
 
 ### Help
 - Use `/chellcraft` in-game to get a link back to this document at any time!
 
 ## In-Progress Features
 
-### Sit: Right-click on a chair to take a seat!
-- Must use empty hand on the top-facing part of a block
-- A chair is a bottom slab or bottom stair with at least one adjacent sign or trapdoor
-- A chair must have a solid block (that you could stand on) underneath, and a non-opaque block above.
-- 1-second cooldown on sitting in a chair
 ### Invisible ItemFrames & Armor Stands!
 - Shoot an invis arrow to make them invisible!
 - The ItemFrame must be filled & ArmorStand must be carrying 1 item (armor or hands) for this to work
