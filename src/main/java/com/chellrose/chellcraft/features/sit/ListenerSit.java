@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+
+import com.chellrose.chellcraft.ChellCraft;
 import com.chellrose.chellcraft.util.EntityDismountCallback;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -48,6 +51,7 @@ public class ListenerSit {
     public static final double DELTA_Y = 0.35;
     public static final String SEAT_TAG = "chellcraft:is_seat";
     public static final long SIT_COOLDOWN = 1000L;
+    public static final Logger LOGGER = ChellCraft.LOGGER;
 
     private Map<UUID, Long> lastSit;
 
@@ -144,7 +148,7 @@ public class ListenerSit {
             }
         }
         if (count > 0) {
-            System.out.println("chellcraft: Removed " + count + " seats");
+            LOGGER.warn("chellcraft: Removed " + count + " seats");
         }
         return ActionResult.PASS;
     }
