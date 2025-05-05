@@ -3,7 +3,8 @@
 	"package": "com.chellrose.chellcraft.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"EntityDismountMixin"
+		"EntityDismountMixin",
+		"ProjectileHitMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

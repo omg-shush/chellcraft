@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import com.chellrose.chellcraft.features.hat.CommandHat;
 import com.chellrose.chellcraft.features.help.CommandHelp;
+import com.chellrose.chellcraft.features.invis.ListenerMakeInvis;
 import com.chellrose.chellcraft.features.sit.ListenerSit;
 
 public class ChellCraft implements ModInitializer {
@@ -25,5 +26,8 @@ public class ChellCraft implements ModInitializer {
 
 		// Register the sit feature
 		new ListenerSit();
+
+		// Register the invis static entities feature
+		new ListenerMakeInvis();
 	}
 }
