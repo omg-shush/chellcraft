@@ -6,6 +6,7 @@ import com.chellrose.chellcraft.ChellCraft;
 import com.chellrose.chellcraft.callbacks.ProjectileHitCallback;
 import com.chellrose.chellcraft.util.ArmorStandUtil;
 import com.chellrose.chellcraft.util.ArrowUtil;
+import com.chellrose.chellcraft.util.ItemFrameUtil;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.Entity.RemovalReason;
@@ -39,7 +40,7 @@ public class ListenerMakeInvis {
                 }
             } else if (target instanceof ItemFrameEntity) {
                 ItemFrameEntity itemFrame = (ItemFrameEntity) target;
-                if (!itemFrame.isInvisible() && itemFrameHasItem(itemFrame)) {
+                if (!itemFrame.isInvisible() && ItemFrameUtil.itemFrameHasItem(itemFrame)) {
                     itemFrame.setInvisible(true);
                     projectile.remove(RemovalReason.DISCARDED);
                     applied = true;
@@ -57,9 +58,5 @@ public class ListenerMakeInvis {
             }
         }
         return ActionResult.PASS;
-    }
-
-    private boolean itemFrameHasItem(ItemFrameEntity itemFrame) {
-        return !itemFrame.getHeldItemStack().isEmpty();
     }
 }

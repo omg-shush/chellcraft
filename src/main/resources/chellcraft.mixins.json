@@ -5,7 +5,8 @@
 	"mixins": [
 		"EntityDismountMixin",
 		"ProjectileHitMixin",
-		"ArmorStandRemoveItemMixin"
+		"ArmorStandRemoveItemMixin",
+		"ItemFrameRemoveItemMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
