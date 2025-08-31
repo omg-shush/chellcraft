@@ -28,6 +28,6 @@ public class ChellCraft implements ModInitializer {
 		new ListenerSit();
 
 		// Register the invis static entities feature
-		// new ListenerMakeInvis();
+		new ListenerMakeInvis();
 	}
 }

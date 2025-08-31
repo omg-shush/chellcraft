@@ -13,9 +13,11 @@ import net.minecraft.entity.Entity.RemovalReason;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.registry.Registries;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.EntityHitResult;
@@ -27,29 +29,40 @@ public class ListenerMakeInvis {
         ProjectileHitCallback.EVENT.register((hit, projectile) -> hit(hit, projectile));
     }
 
-    private ActionResult hit(EntityHitResult hit, ProjectileEntity projectile) {
+    private ActionResult hit(EntityHitResult hit, PersistentProjectileEntity projectile) {
         if (isInvisArrow(projectile)) {
             Entity target = hit.getEntity();
+            boolean applied = false;
             if (target instanceof ArmorStandEntity) {
                 ArmorStandEntity armorStand = (ArmorStandEntity) target;
                 if (!armorStand.isInvisible() && armorStandHasItems(armorStand)) {
                     armorStand.setInvisible(true);
                     projectile.remove(RemovalReason.DISCARDED);
-                    return ActionResult.FAIL;
+                    applied = true;
                 }
             } else if (target instanceof ItemFrameEntity) {
                 ItemFrameEntity itemFrame = (ItemFrameEntity) target;
                 if (!itemFrame.isInvisible() && itemFrameHasItem(itemFrame)) {
                     itemFrame.setInvisible(true);
                     projectile.remove(RemovalReason.DISCARDED);
-                    return ActionResult.FAIL;
+                    applied = true;
                 }
+            }
+
+            if (applied) {
+                ArrowEntity arrow = (ArrowEntity) projectile;
+                Entity source = arrow.getEffectCause();
+                if (source instanceof ServerPlayerEntity) {
+                    ServerPlayerEntity player = (ServerPlayerEntity) source;
+                    player.playSoundToPlayer(SoundEvents.ENTITY_ARROW_HIT_PLAYER, SoundCategory.BLOCKS, 0.5f, 1.0f);
+                }
+                return ActionResult.FAIL;
             }
         }
         return ActionResult.PASS;
     }
 
-    private boolean isInvisArrow(ProjectileEntity projectile) {
+    private boolean isInvisArrow(PersistentProjectileEntity projectile) {
         if (projectile instanceof ArrowEntity) {
             ArrowEntity arrow = (ArrowEntity) projectile;
             PotionContentsComponent potion = arrow.getItemStack().get(DataComponentTypes.POTION_CONTENTS);

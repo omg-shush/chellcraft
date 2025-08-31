@@ -2,7 +2,7 @@ package com.chellrose.chellcraft.util;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.hit.EntityHitResult;
 
@@ -20,6 +20,6 @@ public interface ProjectileHitCallback {
         return ActionResult.PASS;
     });
 
-    ActionResult onEntityHit(EntityHitResult hit, ProjectileEntity projectile);
+    ActionResult onEntityHit(EntityHitResult hit, PersistentProjectileEntity projectile);
 
 }
