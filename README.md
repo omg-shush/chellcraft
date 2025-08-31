@@ -65,6 +65,7 @@ The portion inside `Value:"<texture>"` is what you need, ie you would run the fo
 
 ## TODO
 - [ ] Sit up in bed after sleeping
+- [ ] auto populate books
 - [ ] tiered item despawning - more valuable items take longer
 - [ ] chat channels
 - [ ] /yoink and /unyoink

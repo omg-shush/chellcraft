@@ -5,6 +5,7 @@ import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.chellrose.chellcraft.features.armorstand.ListenerArmorStand;
 import com.chellrose.chellcraft.features.hat.CommandHat;
 import com.chellrose.chellcraft.features.help.CommandHelp;
 import com.chellrose.chellcraft.features.invis.ListenerMakeInvis;
@@ -33,5 +34,8 @@ public class ChellCraft implements ModInitializer {
 		new ListenerMakeInvis();
 		new ListenerRemoveItemFromInvis();
 		new ListenerWashInvis();
+
+		// Register the armor stand modification feature
+		new ListenerArmorStand();
 	}
 }

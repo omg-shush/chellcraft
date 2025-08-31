@@ -1,13 +1,18 @@
 package com.chellrose.chellcraft.features.armorstand;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.entity.decoration.ArmorStandEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.util.math.EulerAngle;
 
 /**
  * Stores the euler angles used for an Armor Stand pose.
  */
-public class ArmorStandPose {
-    private static final EulerAngle ZERO_ANGLE = new EulerAngle(0f, 0f, 0f);
+public class ArmorStandPose {    
+    public static final EulerAngle ZERO_ANGLE = new EulerAngle(0f, 0f, 0f);
 
     public static final ArmorStandPose STRAIGHT_POSE = new ArmorStandPose(
         new EulerAngle(0.017453292519943295f, 0.0f, 0.0f),
@@ -110,6 +115,20 @@ public class ArmorStandPose {
         DANCE2_POSE,
         PROPOSE_POSE
     };
+
+    public static final Map<Item, ArmorStandPose> MUSIC_DISC_POSES = new HashMap<>();
+    static {
+        MUSIC_DISC_POSES.put(Items.MUSIC_DISC_CAT,     ArmorStandPose.LOOKHANDS_POSE);
+        MUSIC_DISC_POSES.put(Items.MUSIC_DISC_BLOCKS,  ArmorStandPose.LOOKATTHIS_POSE);
+        MUSIC_DISC_POSES.put(Items.MUSIC_DISC_CHIRP,   ArmorStandPose.PRAY_POSE);
+        MUSIC_DISC_POSES.put(Items.MUSIC_DISC_FAR,     ArmorStandPose.HUG_POSE);
+        MUSIC_DISC_POSES.put(Items.MUSIC_DISC_MALL,    ArmorStandPose.DAB_POSE);
+        MUSIC_DISC_POSES.put(Items.MUSIC_DISC_MELLOHI, ArmorStandPose.BRUH_POSE);
+        MUSIC_DISC_POSES.put(Items.MUSIC_DISC_STAL,    ArmorStandPose.DANCE1_POSE);
+        MUSIC_DISC_POSES.put(Items.MUSIC_DISC_STRAD,   ArmorStandPose.DANCE2_POSE);
+        MUSIC_DISC_POSES.put(Items.MUSIC_DISC_WARD,    ArmorStandPose.PROPOSE_POSE);
+        MUSIC_DISC_POSES.put(Items.MUSIC_DISC_WAIT,    ArmorStandPose.WAIT_POSE);
+    }
 
     private final EulerAngle headAngles;
     private final EulerAngle leftArmAngles;
