@@ -26,11 +26,11 @@ for line in lines:
         ZERO_ANGLE
     );
     """
-    head_pose = [math.radians(angle) for angle in poses.get("Head", [0.0, 0.0, 0.0])]
-    left_arm_pose = [math.radians(angle) for angle in poses.get("LeftArm", [0.0, 0.0, 0.0])]
-    right_arm_pose = [math.radians(angle) for angle in poses.get("RightArm", [0.0, 0.0, 0.0])]
-    left_leg_pose = [math.radians(angle) for angle in poses.get("LeftLeg", [0.0, 0.0, 0.0])]
-    right_leg_pose = [math.radians(angle) for angle in poses.get("RightLeg", [0.0, 0.0, 0.0])]
+    head_pose      = poses.get("Head", [0.0, 0.0, 0.0])
+    left_arm_pose  = poses.get("LeftArm", [0.0, 0.0, 0.0])
+    right_arm_pose = poses.get("RightArm", [0.0, 0.0, 0.0])
+    left_leg_pose  = poses.get("LeftLeg", [0.0, 0.0, 0.0])
+    right_leg_pose = poses.get("RightLeg", [0.0, 0.0, 0.0])
 
     print(f"public static final ArmorStandPose {name.upper()}_POSE = new ArmorStandPose(")
     print(f"    {'new EulerAngle(' + ', '.join(map(lambda p: str(p) + 'f', head_pose)) + ')' if head_pose != [0.0, 0.0, 0.0] else 'ZERO_ANGLE'},")

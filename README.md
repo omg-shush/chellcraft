@@ -20,17 +20,19 @@ Official Fabric server mod for the EFSC
 - Use a splash water bottle to make them visible again! Also works on other entities!
 - If you remove all visible items, the invisible ItemFrame/ArmorStand will break off
 
-### Help
-- Use `/chellcraft` in-game to get a link back to this document at any time!
-
-## In-Progress Features
-
 ### Armor Stands: Arms & Poses!
+![Armor Stands](img/armorstand.gif)
 - Sneak + Use 2 sticks to add arms to an armor stand in the world
 - Sneak + Use shears to break the arms off again
 - Sneak + Use a pickaxe to remove the armor stand base plate
 - Sneak + Use a smooth stone slab to add the base plate again
 - Sneak + Use a music disc to set the armor stand pose! Discs are not consumed.
+
+### Help
+- Use `/chellcraft` in-game to get a link back to this document at any time!
+
+## In-Progress Features
+
 ### Tag!
 - Use `/tag join` and `/tag leave` to opt in or out
 - Use `/tag online` and `/tag list` to get all (online) players opted in
