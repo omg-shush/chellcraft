@@ -13,16 +13,18 @@ Official Fabric server mod for the EFSC
 - A chair must have a non-opaque block above.
 - 1-second cooldown on sitting in a chair
 
+### Invisible ItemFrames & Armor Stands!
+![Invisible Item Frames & Armor Stands](img/invis.gif)
+- Shoot an invis arrow to make them invisible!
+- The ItemFrame must be filled & ArmorStand must be carrying 1 item (armor or hands) for this to work
+- Use a splash water bottle to make them visible again! Also works on other entities!
+- If you remove all visible items, the invisible ItemFrame/ArmorStand will break off
+
 ### Help
 - Use `/chellcraft` in-game to get a link back to this document at any time!
 
 ## In-Progress Features
 
-### Invisible ItemFrames & Armor Stands!
-- Shoot an invis arrow to make them invisible!
-- The ItemFrame must be filled & ArmorStand must be carrying 1 item (armor or hands) for this to work
-- Use a splash water bottle to make them visible again! Also works on other entities!
-- If you remove all visible items, the invisible ItemFrame/ArmorStand will break off
 ### Armor Stands: Arms & Poses!
 - Sneak + Use 2 sticks to add arms to an armor stand in the world
 - Sneak + Use shears to break the arms off again
