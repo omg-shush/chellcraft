@@ -8,6 +8,7 @@ import com.chellrose.chellcraft.util.ProjectileHitCallback;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.Entity.RemovalReason;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
@@ -60,13 +61,10 @@ public class ListenerMakeInvis {
     }
 
     private boolean armorStandHasItems(ArmorStandEntity armorStand) {
-        for (ItemStack i : armorStand.getArmorItems()) {
-            if (!i.isEmpty()) {
+        for (EquipmentSlot slot : EquipmentSlot.VALUES) {
+            if (!armorStand.getEquippedStack(slot).isEmpty()) {
                 return true;
             }
-        }
-        if (!armorStand.getMainHandStack().isEmpty() || !armorStand.getOffHandStack().isEmpty()) {
-            return true;
         }
         return false;
     }

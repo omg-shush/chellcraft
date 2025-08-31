@@ -1,5 +1,7 @@
 package com.chellrose.chellcraft.features.help;
 
+import java.net.URI;
+
 import com.mojang.brigadier.context.CommandContext;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -20,7 +22,7 @@ public class CommandHelp {
 
     public int help(CommandContext<ServerCommandSource> context) {
         context.getSource().sendMessage(Text.literal("[Click for ChellCraft documentation]").styled(style -> style
-            .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/omg-shush/chellcraft/blob/main/README.md"))
+            .withClickEvent(new ClickEvent.OpenUrl(URI.create("https://github.com/omg-shush/chellcraft/blob/main/README.md")))
             .withUnderline(true)
             .withColor(Formatting.LIGHT_PURPLE)));
         return 0;

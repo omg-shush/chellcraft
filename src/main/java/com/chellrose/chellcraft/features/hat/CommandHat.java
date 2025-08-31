@@ -27,9 +27,9 @@ public class CommandHat {
             return -1;
         }
         PlayerInventory inventory = player.getInventory();
-        ItemStack mainHand = inventory.getStack(inventory.selectedSlot);
+        ItemStack mainHand = inventory.getStack(inventory.getSelectedSlot());
         ItemStack head = inventory.getStack(HELMET_ARMOR_INDEX);
-        inventory.setStack(inventory.selectedSlot, head);
+        inventory.setStack(inventory.getSelectedSlot(), head);
         inventory.setStack(HELMET_ARMOR_INDEX, mainHand);
         player.sendMessage(Text.literal("It's on your head now!").styled(style -> style.withItalic(true)));
         return 1;
