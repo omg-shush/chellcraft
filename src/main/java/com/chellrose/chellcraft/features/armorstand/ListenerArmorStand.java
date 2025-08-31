@@ -10,8 +10,10 @@ import com.chellrose.chellcraft.ChellCraft;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -43,19 +45,64 @@ public class ListenerArmorStand {
         }
 
         // Modify armor stand while sneaking
+        ArmorStandEntity armorStand = (ArmorStandEntity) entity;
         Item modifier = player.getStackInHand(hand).getItem();
         if (modifier.equals(Items.STICK)) {
-            // Add arms to the armor stand
+            return this.addArms(player, hand, armorStand);
         } else if (modifier.equals(Items.SHEARS)) {
-            // Remove arms from the armor stand
-        } else if (PICKAXES.contains(modifier)) {
-            // Remove the base plate from the armor stand
+            return this.removeArms(player, hand, armorStand);
         } else if (modifier.equals(Items.SMOOTH_STONE_SLAB)) {
-            // Add the base plate to the armor stand
+            return this.addBasePlate(player, hand, armorStand);
+        } else if (PICKAXES.contains(modifier)) {
+            return this.removeBasePlate(player, hand, armorStand);
         } else if (ArmorStandPose.MUSIC_DISC_POSES.containsKey(modifier)) {
-            // Apply the pose to the armor stand
-            ArmorStandPose pose = ArmorStandPose.MUSIC_DISC_POSES.get(modifier);
+            return this.applyPose(player, hand, armorStand);
         }
+        return ActionResult.PASS;
+    }
+
+    private ActionResult addArms(PlayerEntity player, Hand hand, ArmorStandEntity armorStand) {
+        // Logic to add arms to the armor stand
+        ItemStack handStack = player.getStackInHand(hand);
+        if (!armorStand.shouldShowArms() && handStack.getCount() >= 2) {
+            handStack.decrement(2);
+            if (handStack.getCount() <= 0) {
+                player.setStackInHand(hand, ItemStack.EMPTY);
+            }
+            armorStand.setShowArms(true);
+            return ActionResult.SUCCESS;
+        }
+        return ActionResult.PASS;
+    }
+
+    private ActionResult removeArms(PlayerEntity player, Hand hand, ArmorStandEntity armorStand) {
+        // Logic to remove arms from the armor stand
+        if (armorStand.shouldShowArms()) {
+            player.getStackInHand(hand).damage(2, player, hand);
+            armorStand.setShowArms(false);
+            return ActionResult.SUCCESS;
+        }
+        return ActionResult.PASS;
+    }
+
+    private ActionResult addBasePlate(PlayerEntity player, Hand hand, ArmorStandEntity armorStand) {
+        // Logic to add a base plate to the armor stand
         return ActionResult.SUCCESS;
+    }
+
+    private ActionResult removeBasePlate(PlayerEntity player, Hand hand, ArmorStandEntity armorStand) {
+        // Logic to remove a base plate from the armor stand
+        return ActionResult.SUCCESS;
+    }
+
+    private ActionResult applyPose(PlayerEntity player, Hand hand, ArmorStandEntity armorStand) {
+        ItemStack handStack = player.getStackInHand(hand);
+        Item item = handStack.getItem();
+        if (ArmorStandPose.MUSIC_DISC_POSES.containsKey(item)) {
+            ArmorStandPose pose = ArmorStandPose.MUSIC_DISC_POSES.get(item);
+            pose.apply(armorStand);
+            return ActionResult.SUCCESS;
+        }
+        return ActionResult.PASS;
     }
 }
