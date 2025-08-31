@@ -7,7 +7,7 @@ import java.util.UUID;
 import org.slf4j.Logger;
 
 import com.chellrose.chellcraft.ChellCraft;
-import com.chellrose.chellcraft.util.EntityDismountCallback;
+import com.chellrose.chellcraft.callbacks.EntityDismountCallback;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
@@ -57,10 +57,10 @@ public class ListenerSit {
 
     public ListenerSit() {
         lastSit = new HashMap<>();
-        UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> sit(player, world, hand, hitResult));
-        EntityDismountCallback.EVENT.register((passenger, mount) -> stand(passenger, mount));
-        ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> disconnect(handler, server));
-        ServerLifecycleEvents.SERVER_STOPPING.register((server) -> stopping(server));
+        UseBlockCallback.EVENT.register(this::sit);
+        EntityDismountCallback.EVENT.register(this::stand);
+        ServerPlayConnectionEvents.DISCONNECT.register(this::disconnect);
+        ServerLifecycleEvents.SERVER_STOPPING.register(this::stopping);
     }
 
     private ActionResult sit(PlayerEntity player, World world, Hand hand, BlockHitResult hitResult) {

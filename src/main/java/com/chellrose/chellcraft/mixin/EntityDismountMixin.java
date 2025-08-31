@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.chellrose.chellcraft.util.EntityDismountCallback;
+import com.chellrose.chellcraft.callbacks.EntityDismountCallback;
 
 @Mixin(Entity.class)
 public class EntityDismountMixin {

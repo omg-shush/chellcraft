@@ -4,7 +4,8 @@
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
 		"EntityDismountMixin",
-		"ProjectileHitMixin"
+		"ProjectileHitMixin",
+		"ArmorStandRemoveItemMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

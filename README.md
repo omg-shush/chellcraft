@@ -62,6 +62,7 @@ The portion inside `Value:"<texture>"` is what you need, ie you would run the fo
 - If you're carrying a player, sneak-left-click to eject them in the direction you're looking.
 
 ## TODO
+- [ ] Sit up in bed after sleeping
 - [ ] tiered item despawning - more valuable items take longer
 - [ ] chat channels
 - [ ] /yoink and /unyoink

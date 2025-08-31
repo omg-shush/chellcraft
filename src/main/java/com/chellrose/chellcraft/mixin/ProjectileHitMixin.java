@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.chellrose.chellcraft.util.ProjectileHitCallback;
+import com.chellrose.chellcraft.callbacks.ProjectileHitCallback;
 
 @Mixin(PersistentProjectileEntity.class)
 public class ProjectileHitMixin {
