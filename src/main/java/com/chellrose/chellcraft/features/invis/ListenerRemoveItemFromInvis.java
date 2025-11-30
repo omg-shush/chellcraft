@@ -34,7 +34,7 @@ public class ListenerRemoveItemFromInvis {
             armorStand.remove(RemovalReason.DISCARDED);
             ItemStack itemStack = new ItemStack(Items.ARMOR_STAND);
             itemStack.set(DataComponentTypes.CUSTOM_NAME, armorStand.getCustomName());
-            Block.dropStack(armorStand.getWorld(), armorStand.getBlockPos(), itemStack);
+            Block.dropStack(armorStand.getEntityWorld(), armorStand.getBlockPos(), itemStack);
             if (player != null) {
                 player.playSoundToPlayer(SoundEvents.ENTITY_VILLAGER_NO, SoundCategory.BLOCKS, 0.5f, 1.0f);
             }
@@ -46,7 +46,7 @@ public class ListenerRemoveItemFromInvis {
     private ActionResult itemFrameRemoveItem(ItemFrameEntity itemFrame, @Nullable PlayerEntity player) {
         if (itemFrame.isInvisible() && itemFrame.getHeldItemStack().isEmpty()) {
             itemFrame.remove(RemovalReason.DISCARDED);
-            Block.dropStack(itemFrame.getWorld(), itemFrame.getBlockPos(), ItemFrameUtil.getAsItemStack(itemFrame));
+            Block.dropStack(itemFrame.getEntityWorld(), itemFrame.getBlockPos(), ItemFrameUtil.getAsItemStack(itemFrame));
             if (player != null) {
                 player.playSoundToPlayer(SoundEvents.ENTITY_VILLAGER_NO, SoundCategory.BLOCKS, 0.5f, 1.0f);
             }

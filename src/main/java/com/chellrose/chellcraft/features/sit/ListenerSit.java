@@ -124,7 +124,7 @@ public class ListenerSit {
                 BeeEntity bee = (BeeEntity) mount;
                 if (bee.getCommandTags().contains(SEAT_TAG)) {
                     player.stopRiding();
-                    player.setPosition(mount.getPos().add(0.0, 1.0 - DELTA_Y, 0.0));
+                    player.setPosition(mount.getEntityPos().add(0.0, 1.0 - DELTA_Y, 0.0));
                     mount.remove(RemovalReason.DISCARDED);
                 }
             }
