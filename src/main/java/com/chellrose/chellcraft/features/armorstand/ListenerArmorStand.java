@@ -7,6 +7,8 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import com.chellrose.chellcraft.ChellCraft;
+import com.chellrose.chellcraft.util.PlayerSoundUtil;
+
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -75,7 +77,7 @@ public class ListenerArmorStand {
                 player.setStackInHand(hand, ItemStack.EMPTY);
             }
             armorStand.setShowArms(true);
-            player.playSoundToPlayer(SoundEvents.ITEM_ARMOR_EQUIP_LEATHER.value(), SoundCategory.BLOCKS, 0.5f, 1.0f);
+            PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER.value(), SoundCategory.BLOCKS, 0.5f, 1.0f);
             return ActionResult.SUCCESS;
         }
         return ActionResult.PASS;
@@ -96,7 +98,7 @@ public class ListenerArmorStand {
                 armorStand.dropItem(armorStandOffHand, false, false);
                 armorStand.setStackInHand(Hand.OFF_HAND, ItemStack.EMPTY);
             }
-            player.playSoundToPlayer(SoundEvents.ITEM_SHEARS_SNIP, SoundCategory.BLOCKS, 0.5f, 1.0f);
+            PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.ITEM_SHEARS_SNIP, SoundCategory.BLOCKS, 0.5f, 1.0f);
             return ActionResult.SUCCESS;
         }
         return ActionResult.PASS;
@@ -111,7 +113,7 @@ public class ListenerArmorStand {
                 player.setStackInHand(hand, ItemStack.EMPTY);
             }
             armorStand.setHideBasePlate(false);
-            player.playSoundToPlayer(SoundEvents.BLOCK_STONE_PLACE, SoundCategory.BLOCKS, 0.5f, 1.0f);
+            PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.BLOCK_STONE_PLACE, SoundCategory.BLOCKS, 0.5f, 1.0f);
             return ActionResult.SUCCESS;
         }
         return ActionResult.PASS;
@@ -122,7 +124,7 @@ public class ListenerArmorStand {
         if (armorStand.shouldShowBasePlate()) {
             player.getStackInHand(hand).damage(1, player, hand);
             armorStand.setHideBasePlate(true);
-            player.playSoundToPlayer(SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 0.5f, 1.0f);
+            PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 0.5f, 1.0f);
             return ActionResult.SUCCESS;
         }
         return ActionResult.PASS;
@@ -133,7 +135,7 @@ public class ListenerArmorStand {
         Item item = player.getStackInHand(hand).getItem();
         if (ArmorStandPose.MUSIC_DISC_POSES.containsKey(item)) {
             ArmorStandPose.MUSIC_DISC_POSES.get(item).apply(armorStand);
-            player.playSoundToPlayer(SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, SoundCategory.BLOCKS, 0.5f, 1.0f);
+            PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, SoundCategory.BLOCKS, 0.5f, 1.0f);
             return ActionResult.SUCCESS;
         }
         return ActionResult.PASS;
@@ -144,7 +146,7 @@ public class ListenerArmorStand {
         ArmorStandPose currentPose = new ArmorStandPose(armorStand);
         ArmorStandPose nextPose = ArmorStandPose.fromIndex(currentPose.index() + 1);
         nextPose.apply(armorStand);
-        player.playSoundToPlayer(SoundEvents.BLOCK_AMETHYST_CLUSTER_STEP, SoundCategory.BLOCKS, 0.5f, 1.0f);
+        PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.BLOCK_AMETHYST_CLUSTER_STEP, SoundCategory.BLOCKS, 0.5f, 1.0f);
         return ActionResult.SUCCESS;
     }
 

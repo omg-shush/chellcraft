@@ -8,6 +8,7 @@ import com.chellrose.chellcraft.callbacks.ArmorStandRemoveItemCallback;
 import com.chellrose.chellcraft.callbacks.ItemFrameRemoveItemCallback;
 import com.chellrose.chellcraft.util.ArmorStandUtil;
 import com.chellrose.chellcraft.util.ItemFrameUtil;
+import com.chellrose.chellcraft.util.PlayerSoundUtil;
 
 import net.minecraft.block.Block;
 import net.minecraft.component.DataComponentTypes;
@@ -36,7 +37,7 @@ public class ListenerRemoveItemFromInvis {
             itemStack.set(DataComponentTypes.CUSTOM_NAME, armorStand.getCustomName());
             Block.dropStack(armorStand.getEntityWorld(), armorStand.getBlockPos(), itemStack);
             if (player != null) {
-                player.playSoundToPlayer(SoundEvents.ENTITY_VILLAGER_NO, SoundCategory.BLOCKS, 0.5f, 1.0f);
+                PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.ENTITY_VILLAGER_NO, SoundCategory.BLOCKS, 0.5f, 1.0f);
             }
             return ActionResult.SUCCESS;
         }
@@ -48,7 +49,7 @@ public class ListenerRemoveItemFromInvis {
             itemFrame.remove(RemovalReason.DISCARDED);
             Block.dropStack(itemFrame.getEntityWorld(), itemFrame.getBlockPos(), ItemFrameUtil.getAsItemStack(itemFrame));
             if (player != null) {
-                player.playSoundToPlayer(SoundEvents.ENTITY_VILLAGER_NO, SoundCategory.BLOCKS, 0.5f, 1.0f);
+                PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.ENTITY_VILLAGER_NO, SoundCategory.BLOCKS, 0.5f, 1.0f);
             }
             return ActionResult.SUCCESS;
         }

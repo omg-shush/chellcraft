@@ -2,3 +2,5 @@
 2. Update gradle.properties with versions from https://fabricmc.net/develop/
 3. Update fabric.mod.json versions for "fabricloader" and "minecraft"
 4. Update 'fabric-loom' version at top of build.gradle
+5. Refresh `./gradlew genSources`
+6. Rebuild with `./gradlew build`

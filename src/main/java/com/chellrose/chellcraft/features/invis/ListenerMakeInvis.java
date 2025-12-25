@@ -7,6 +7,7 @@ import com.chellrose.chellcraft.callbacks.ProjectileHitCallback;
 import com.chellrose.chellcraft.util.ArmorStandUtil;
 import com.chellrose.chellcraft.util.ArrowUtil;
 import com.chellrose.chellcraft.util.ItemFrameUtil;
+import com.chellrose.chellcraft.util.PlayerSoundUtil;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.Entity.RemovalReason;
@@ -52,7 +53,7 @@ public class ListenerMakeInvis {
                 Entity source = arrow.getEffectCause();
                 if (source instanceof ServerPlayerEntity) {
                     ServerPlayerEntity player = (ServerPlayerEntity) source;
-                    player.playSoundToPlayer(SoundEvents.ENTITY_ARROW_HIT_PLAYER, SoundCategory.BLOCKS, 0.5f, 1.0f);
+                    PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.ENTITY_ARROW_HIT_PLAYER, SoundCategory.BLOCKS, 0.5f, 1.0f);
                 }
                 return ActionResult.FAIL;
             }
