@@ -2,104 +2,103 @@ package com.chellrose.chellcraft.features.armorstand;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import net.minecraft.entity.decoration.ArmorStandEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.util.math.EulerAngle;
+import net.minecraft.core.Rotations;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 
 /**
  * Stores the euler angles used for an Armor Stand pose.
  */
 public class ArmorStandPose {    
-    public static final EulerAngle ZERO_ANGLE = new EulerAngle(0f, 0f, 0f);
+    public static final Rotations ZERO_ANGLE = new Rotations(0f, 0f, 0f);
 
     public static final ArmorStandPose STRAIGHT_POSE = new ArmorStandPose(
-        new EulerAngle(1.0f, 0.0f, 0.0f),
-        new EulerAngle(1.0f, 0.0f, 0.0f),
-        new EulerAngle(1.0f, 0.0f, 0.0f),
+        new Rotations(1.0f, 0.0f, 0.0f),
+        new Rotations(1.0f, 0.0f, 0.0f),
+        new Rotations(1.0f, 0.0f, 0.0f),
         ZERO_ANGLE,
         ZERO_ANGLE
     );
 
     public static final ArmorStandPose LOOKHANDS_POSE = new ArmorStandPose(
-        new EulerAngle(19.0f, 0.0f, 0.0f),
-        new EulerAngle(298.0f, 29.0f, 0.0f),
-        new EulerAngle(308.0f, 328.0f, 0.0f),
+        new Rotations(19.0f, 0.0f, 0.0f),
+        new Rotations(298.0f, 29.0f, 0.0f),
+        new Rotations(308.0f, 328.0f, 0.0f),
         ZERO_ANGLE,
         ZERO_ANGLE
     );
 
     public static final ArmorStandPose LOOKATTHIS_POSE = new ArmorStandPose(
-        new EulerAngle(348.0f, 0.0f, 0.0f),
-        new EulerAngle(16.0f, 12.0f, 0.0f),
-        new EulerAngle(325.0f, 29.0f, 0.0f),
+        new Rotations(348.0f, 0.0f, 0.0f),
+        new Rotations(16.0f, 12.0f, 0.0f),
+        new Rotations(325.0f, 29.0f, 0.0f),
         ZERO_ANGLE,
         ZERO_ANGLE
     );
 
     public static final ArmorStandPose WAIT_POSE = new ArmorStandPose(
         ZERO_ANGLE,
-        new EulerAngle(29.0f, 0.0f, 0.0f),
-        new EulerAngle(231.0f, 0.0f, 0.0f),
+        new Rotations(29.0f, 0.0f, 0.0f),
+        new Rotations(231.0f, 0.0f, 0.0f),
         ZERO_ANGLE,
         ZERO_ANGLE
     );
 
     public static final ArmorStandPose PRAY_POSE = new ArmorStandPose(
-        new EulerAngle(328.0f, 0.0f, 0.0f),
-        new EulerAngle(221.0f, 0.0f, 322.0f),
-        new EulerAngle(221.0f, 0.0f, 39.0f),
-        new EulerAngle(2.0f, 0.0f, 0.0f),
+        new Rotations(328.0f, 0.0f, 0.0f),
+        new Rotations(221.0f, 0.0f, 322.0f),
+        new Rotations(221.0f, 0.0f, 39.0f),
+        new Rotations(2.0f, 0.0f, 0.0f),
         ZERO_ANGLE
     );
 
     public static final ArmorStandPose HUG_POSE = new ArmorStandPose(
         ZERO_ANGLE,
-        new EulerAngle(305.0f, 0.0f, 234.0f),
-        new EulerAngle(234.0f, 0.0f, 305.0f),
+        new Rotations(305.0f, 0.0f, 234.0f),
+        new Rotations(234.0f, 0.0f, 305.0f),
         ZERO_ANGLE,
         ZERO_ANGLE
     );
 
     public static final ArmorStandPose DAB_POSE = new ArmorStandPose(
-        new EulerAngle(32.0f, 0.0f, 0.0f),
-        new EulerAngle(248.0f, 312.0f, 0.0f),
-        new EulerAngle(254.0f, 325.0f, 0.0f),
-        new EulerAngle(0.0f, 32.0f, 0.0f),
+        new Rotations(32.0f, 0.0f, 0.0f),
+        new Rotations(248.0f, 312.0f, 0.0f),
+        new Rotations(254.0f, 325.0f, 0.0f),
+        new Rotations(0.0f, 32.0f, 0.0f),
         ZERO_ANGLE
     );
 
     public static final ArmorStandPose BRUH_POSE = new ArmorStandPose(
         ZERO_ANGLE,
-        new EulerAngle(254.0f, 0.0f, 0.0f),
-        new EulerAngle(248.0f, 0.0f, 0.0f),
+        new Rotations(254.0f, 0.0f, 0.0f),
+        new Rotations(248.0f, 0.0f, 0.0f),
         ZERO_ANGLE,
-        new EulerAngle(318.0f, 0.0f, 0.0f)
+        new Rotations(318.0f, 0.0f, 0.0f)
     );
 
     public static final ArmorStandPose DANCE1_POSE = new ArmorStandPose(
         ZERO_ANGLE,
-        new EulerAngle(0.0f, 0.0f, 238.0f),
-        new EulerAngle(0.0f, 0.0f, 120.0f),
-        new EulerAngle(355.0f, 42.0f, 0.0f),
-        new EulerAngle(254.0f, 73.0f, 0.0f)
+        new Rotations(0.0f, 0.0f, 238.0f),
+        new Rotations(0.0f, 0.0f, 120.0f),
+        new Rotations(355.0f, 42.0f, 0.0f),
+        new Rotations(254.0f, 73.0f, 0.0f)
     );
 
     public static final ArmorStandPose DANCE2_POSE = new ArmorStandPose(
         ZERO_ANGLE,
-        new EulerAngle(0.0f, 0.0f, 238.0f),
-        new EulerAngle(0.0f, 0.0f, 120.0f),
-        new EulerAngle(268.0f, 318.0f, 0.0f),
-        new EulerAngle(2.0f, 90.0f, 0.0f)
+        new Rotations(0.0f, 0.0f, 238.0f),
+        new Rotations(0.0f, 0.0f, 120.0f),
+        new Rotations(268.0f, 318.0f, 0.0f),
+        new Rotations(2.0f, 90.0f, 0.0f)
     );
 
     public static final ArmorStandPose PROPOSE_POSE = new ArmorStandPose(
-        new EulerAngle(0.0f, 66.0f, 0.0f),
-        new EulerAngle(349.0f, 0.0f, 0.0f),
-        new EulerAngle(187.0f, 0.0f, 288.0f),
-        new EulerAngle(2.0f, 42.0f, 0.0f),
-        new EulerAngle(0.0f, 32.0f, 0.0f)
+        new Rotations(0.0f, 66.0f, 0.0f),
+        new Rotations(349.0f, 0.0f, 0.0f),
+        new Rotations(187.0f, 0.0f, 288.0f),
+        new Rotations(2.0f, 42.0f, 0.0f),
+        new Rotations(0.0f, 32.0f, 0.0f)
     );
 
     private static final ArmorStandPose[] POSES = {
@@ -130,14 +129,14 @@ public class ArmorStandPose {
         MUSIC_DISC_POSES.put(Items.MUSIC_DISC_WAIT,    ArmorStandPose.WAIT_POSE);
     }
 
-    private final EulerAngle headAngles;
-    private final EulerAngle leftArmAngles;
-    private final EulerAngle rightArmAngles;
-    private final EulerAngle leftLegAngles;
-    private final EulerAngle rightLegAngles;
+    private final Rotations headAngles;
+    private final Rotations leftArmAngles;
+    private final Rotations rightArmAngles;
+    private final Rotations leftLegAngles;
+    private final Rotations rightLegAngles;
 
     // Accepts Euler angles for all posable parts of an Armor Stand
-    public ArmorStandPose(EulerAngle headAngles, EulerAngle leftArmAngles, EulerAngle rightArmAngles, EulerAngle leftLegAngles, EulerAngle rightLegAngles) {
+    public ArmorStandPose(Rotations headAngles, Rotations leftArmAngles, Rotations rightArmAngles, Rotations leftLegAngles, Rotations rightLegAngles) {
         this.headAngles     = headAngles;
         this.leftArmAngles  = leftArmAngles;
         this.rightArmAngles = rightArmAngles;
@@ -146,12 +145,12 @@ public class ArmorStandPose {
     }
 
     // Construct ArmorStandPose based on an existing ArmorStandEntity
-    public ArmorStandPose(ArmorStandEntity armorStand) {
-        this.headAngles     = armorStand.getHeadRotation();
-        this.leftArmAngles  = armorStand.getLeftArmRotation();
-        this.rightArmAngles = armorStand.getRightArmRotation();
-        this.leftLegAngles  = armorStand.getLeftLegRotation();
-        this.rightLegAngles = armorStand.getRightLegRotation();
+    public ArmorStandPose(ArmorStand armorStand) {
+        this.headAngles     = armorStand.getHeadPose();
+        this.leftArmAngles  = armorStand.getLeftArmPose();
+        this.rightArmAngles = armorStand.getRightArmPose();
+        this.leftLegAngles  = armorStand.getLeftLegPose();
+        this.rightLegAngles = armorStand.getRightLegPose();
     }
 
     /**
@@ -159,12 +158,12 @@ public class ArmorStandPose {
      *
      * @param armorStand the ArmorStandEntity to apply this pose to
      */
-    public void apply(ArmorStandEntity armorStand) {
-        armorStand.setHeadRotation(this.headAngles);
-        armorStand.setLeftArmRotation(this.leftArmAngles);
-        armorStand.setRightArmRotation(this.rightArmAngles);
-        armorStand.setLeftLegRotation(this.leftLegAngles);
-        armorStand.setRightLegRotation(this.rightLegAngles);
+    public void apply(ArmorStand armorStand) {
+        armorStand.setHeadPose(this.headAngles);
+        armorStand.setLeftArmPose(this.leftArmAngles);
+        armorStand.setRightArmPose(this.rightArmAngles);
+        armorStand.setLeftLegPose(this.leftLegAngles);
+        armorStand.setRightLegPose(this.rightLegAngles);
     }
 
     public boolean equals(ArmorStandPose other) {

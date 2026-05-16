@@ -4,22 +4,22 @@ import org.jetbrains.annotations.Nullable;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.entity.decoration.ItemFrameEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ActionResult;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.decoration.ItemFrame;
+import net.minecraft.world.entity.player.Player;
 
 public interface ItemFrameRemoveItemCallback {
     Event<ItemFrameRemoveItemCallback> EVENT = EventFactory.createArrayBacked(ItemFrameRemoveItemCallback.class,
     (listeners) -> (itemFrame, player) -> {
         for (ItemFrameRemoveItemCallback listener : listeners) {
-            ActionResult result = listener.onItemFrameUnequip(itemFrame, player);
+            InteractionResult result = listener.onItemFrameUnequip(itemFrame, player);
 
-            if (result != ActionResult.PASS) {
+            if (result != InteractionResult.PASS) {
                 return result;
             }
         }
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     });
 
-    ActionResult onItemFrameUnequip(ItemFrameEntity itemFrame, @Nullable PlayerEntity player);
+    InteractionResult onItemFrameUnequip(ItemFrame itemFrame, @Nullable Player player);
 }

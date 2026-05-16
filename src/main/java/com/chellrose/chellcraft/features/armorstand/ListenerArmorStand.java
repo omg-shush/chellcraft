@@ -10,19 +10,19 @@ import com.chellrose.chellcraft.ChellCraft;
 import com.chellrose.chellcraft.util.PlayerSoundUtil;
 
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.decoration.ArmorStandEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.world.World;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
 
 public class ListenerArmorStand {
     public static final Logger LOGGER = ChellCraft.LOGGER;
@@ -40,18 +40,18 @@ public class ListenerArmorStand {
         UseEntityCallback.EVENT.register(this::useEntity);
     }
 
-    private ActionResult useEntity(PlayerEntity player, World world, Hand hand, Entity entity, @Nullable EntityHitResult hitResult) {
+    private InteractionResult useEntity(Player player, Level world, InteractionHand hand, Entity entity, @Nullable EntityHitResult hitResult) {
         if (entity.getType() != EntityType.ARMOR_STAND) {
-            return ActionResult.PASS;
+            return InteractionResult.PASS;
         }
-        if (!player.isSneaking()) {
-            return ActionResult.PASS;
+        if (!player.isShiftKeyDown()) {
+            return InteractionResult.PASS;
         }
 
         // Modify armor stand while sneaking
-        ArmorStandEntity armorStand = (ArmorStandEntity) entity;
-        Item modifier = player.getStackInHand(hand).getItem();
-        ActionResult result = ActionResult.PASS;
+        ArmorStand armorStand = (ArmorStand) entity;
+        Item modifier = player.getItemInHand(hand).getItem();
+        InteractionResult result = InteractionResult.PASS;
         if (modifier.equals(Items.STICK)) {
             result = this.addArms(player, hand, armorStand);
         } else if (modifier.equals(Items.SHEARS)) {
@@ -68,86 +68,86 @@ public class ListenerArmorStand {
         return result;
     }
 
-    private ActionResult addArms(PlayerEntity player, Hand hand, ArmorStandEntity armorStand) {
+    private InteractionResult addArms(Player player, InteractionHand hand, ArmorStand armorStand) {
         // Add arms to the armor stand with 2 sticks
-        ItemStack handStack = player.getStackInHand(hand);
-        if (!armorStand.shouldShowArms() && handStack.getCount() >= 2) {
-            handStack.decrement(2);
+        ItemStack handStack = player.getItemInHand(hand);
+        if (!armorStand.showArms() && handStack.getCount() >= 2) {
+            handStack.shrink(2);
             if (handStack.getCount() <= 0) {
-                player.setStackInHand(hand, ItemStack.EMPTY);
+                player.setItemInHand(hand, ItemStack.EMPTY);
             }
             armorStand.setShowArms(true);
-            PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER.value(), SoundCategory.BLOCKS, 0.5f, 1.0f);
-            return ActionResult.SUCCESS;
+            PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.ARMOR_EQUIP_LEATHER.value(), SoundSource.BLOCKS, 0.5f, 1.0f);
+            return InteractionResult.SUCCESS;
         }
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 
-    private ActionResult removeArms(PlayerEntity player, Hand hand, ArmorStandEntity armorStand) {
+    private InteractionResult removeArms(Player player, InteractionHand hand, ArmorStand armorStand) {
         // Remove arms from the armor stand with shears, and drop any held items
-        if (armorStand.shouldShowArms()) {
-            player.getStackInHand(hand).damage(2, player, hand);
+        if (armorStand.showArms()) {
+            player.getItemInHand(hand).hurtAndBreak(2, player, hand);
             armorStand.setShowArms(false);
-            ItemStack armorStandMainHand = armorStand.getMainHandStack();
-            ItemStack armorStandOffHand = armorStand.getOffHandStack();
+            ItemStack armorStandMainHand = armorStand.getMainHandItem();
+            ItemStack armorStandOffHand = armorStand.getOffhandItem();
             if (!armorStandMainHand.isEmpty()) {
-                armorStand.dropItem(armorStandMainHand, false, false);
-                armorStand.setStackInHand(Hand.MAIN_HAND, ItemStack.EMPTY);
+                armorStand.drop(armorStandMainHand, false, false);
+                armorStand.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
             }
             if (!armorStandOffHand.isEmpty()) {
-                armorStand.dropItem(armorStandOffHand, false, false);
-                armorStand.setStackInHand(Hand.OFF_HAND, ItemStack.EMPTY);
+                armorStand.drop(armorStandOffHand, false, false);
+                armorStand.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
             }
-            PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.ITEM_SHEARS_SNIP, SoundCategory.BLOCKS, 0.5f, 1.0f);
-            return ActionResult.SUCCESS;
+            PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.SHEARS_SNIP, SoundSource.BLOCKS, 0.5f, 1.0f);
+            return InteractionResult.SUCCESS;
         }
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 
-    private ActionResult addBasePlate(PlayerEntity player, Hand hand, ArmorStandEntity armorStand) {
+    private InteractionResult addBasePlate(Player player, InteractionHand hand, ArmorStand armorStand) {
         // Add a base plate to the armor stand with a smooth stone slab
-        ItemStack handStack = player.getStackInHand(hand);
-        if (!armorStand.shouldShowBasePlate()) {
-            handStack.decrement(1);
+        ItemStack handStack = player.getItemInHand(hand);
+        if (!armorStand.showBasePlate()) {
+            handStack.shrink(1);
             if (handStack.getCount() <= 0) {
-                player.setStackInHand(hand, ItemStack.EMPTY);
+                player.setItemInHand(hand, ItemStack.EMPTY);
             }
-            armorStand.setHideBasePlate(false);
-            PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.BLOCK_STONE_PLACE, SoundCategory.BLOCKS, 0.5f, 1.0f);
-            return ActionResult.SUCCESS;
+            armorStand.setNoBasePlate(false);
+            PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.STONE_PLACE, SoundSource.BLOCKS, 0.5f, 1.0f);
+            return InteractionResult.SUCCESS;
         }
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 
-    private ActionResult removeBasePlate(PlayerEntity player, Hand hand, ArmorStandEntity armorStand) {
+    private InteractionResult removeBasePlate(Player player, InteractionHand hand, ArmorStand armorStand) {
         // Remove a base plate from the armor stand with a pickaxe
-        if (armorStand.shouldShowBasePlate()) {
-            player.getStackInHand(hand).damage(1, player, hand);
-            armorStand.setHideBasePlate(true);
-            PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 0.5f, 1.0f);
-            return ActionResult.SUCCESS;
+        if (armorStand.showBasePlate()) {
+            player.getItemInHand(hand).hurtAndBreak(1, player, hand);
+            armorStand.setNoBasePlate(true);
+            PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 0.5f, 1.0f);
+            return InteractionResult.SUCCESS;
         }
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 
-    private ActionResult applyPose(PlayerEntity player, Hand hand, ArmorStandEntity armorStand) {
+    private InteractionResult applyPose(Player player, InteractionHand hand, ArmorStand armorStand) {
         // Apply a pose to the armor stand without consuming the music disc
-        Item item = player.getStackInHand(hand).getItem();
+        Item item = player.getItemInHand(hand).getItem();
         if (ArmorStandPose.MUSIC_DISC_POSES.containsKey(item)) {
             ArmorStandPose.MUSIC_DISC_POSES.get(item).apply(armorStand);
-            PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, SoundCategory.BLOCKS, 0.5f, 1.0f);
-            return ActionResult.SUCCESS;
+            PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.BLOCKS, 0.5f, 1.0f);
+            return InteractionResult.SUCCESS;
         }
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 
-    private ActionResult cyclePose(PlayerEntity player, Hand hand, ArmorStandEntity armorStand) {
+    private InteractionResult cyclePose(Player player, InteractionHand hand, ArmorStand armorStand) {
         // Cycle through the available poses for the armor stand
         ArmorStandPose currentPose = new ArmorStandPose(armorStand);
         ArmorStandPose nextPose = ArmorStandPose.fromIndex(currentPose.index() + 1);
         nextPose.apply(armorStand);
-        PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.BLOCK_AMETHYST_CLUSTER_STEP, SoundCategory.BLOCKS, 0.5f, 1.0f);
-        return ActionResult.SUCCESS;
+        PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.AMETHYST_CLUSTER_STEP, SoundSource.BLOCKS, 0.5f, 1.0f);
+        return InteractionResult.SUCCESS;
     }
 
 }

@@ -2,22 +2,22 @@ package com.chellrose.chellcraft.callbacks;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
+import net.minecraft.world.phys.EntityHitResult;
 
 public interface ProjectileHitCallback {
     Event<ProjectileHitCallback> EVENT = EventFactory.createArrayBacked(ProjectileHitCallback.class,
     (listeners) -> (projectile, target) -> {
         for (ProjectileHitCallback listener : listeners) {
-            ActionResult result = listener.onEntityHit(projectile, target);
+            InteractionResult result = listener.onEntityHit(projectile, target);
         
-            if (result != ActionResult.PASS) {
+            if (result != InteractionResult.PASS) {
                 return result;
             }
         }
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     });
 
-    ActionResult onEntityHit(EntityHitResult hit, PersistentProjectileEntity projectile);
+    InteractionResult onEntityHit(EntityHitResult hit, AbstractArrow projectile);
 }

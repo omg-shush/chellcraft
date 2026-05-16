@@ -1,19 +1,19 @@
 package com.chellrose.chellcraft.util;
 
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.PotionContentsComponent;
-import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.Arrow;
+import net.minecraft.world.item.alchemy.PotionContents;
 
 public class ArrowUtil {
-    public static boolean isInvisArrow(PersistentProjectileEntity projectile) {
-        if (projectile instanceof ArrowEntity) {
-            ArrowEntity arrow = (ArrowEntity) projectile;
-            PotionContentsComponent potion = arrow.getItemStack().get(DataComponentTypes.POTION_CONTENTS);
+    public static boolean isInvisArrow(AbstractArrow projectile) {
+        if (projectile instanceof Arrow) {
+            Arrow arrow = (Arrow) projectile;
+            PotionContents potion = arrow.getPickupItemStackOrigin().get(DataComponents.POTION_CONTENTS);
             if (potion != null) {
-                return potion.matches(Registries.POTION.getEntry(Identifier.ofVanilla("invisibility")).get());
+                return potion.is(BuiltInRegistries.POTION.get(Identifier.withDefaultNamespace("invisibility")).get());
             }
         }
         return false;

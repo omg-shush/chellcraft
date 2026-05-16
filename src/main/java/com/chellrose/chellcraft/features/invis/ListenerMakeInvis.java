@@ -8,18 +8,17 @@ import com.chellrose.chellcraft.util.ArmorStandUtil;
 import com.chellrose.chellcraft.util.ArrowUtil;
 import com.chellrose.chellcraft.util.ItemFrameUtil;
 import com.chellrose.chellcraft.util.PlayerSoundUtil;
-
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.Entity.RemovalReason;
-import net.minecraft.entity.decoration.ArmorStandEntity;
-import net.minecraft.entity.decoration.ItemFrameEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Entity.RemovalReason;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.decoration.ItemFrame;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.Arrow;
+import net.minecraft.world.phys.EntityHitResult;
 
 public class ListenerMakeInvis {
     public static final Logger LOGGER = ChellCraft.LOGGER;
@@ -28,19 +27,19 @@ public class ListenerMakeInvis {
         ProjectileHitCallback.EVENT.register(this::hit);
     }
 
-    private ActionResult hit(EntityHitResult hit, PersistentProjectileEntity projectile) {
+    private InteractionResult hit(EntityHitResult hit, AbstractArrow projectile) {
         if (ArrowUtil.isInvisArrow(projectile)) {
             Entity target = hit.getEntity();
             boolean applied = false;
-            if (target instanceof ArmorStandEntity) {
-                ArmorStandEntity armorStand = (ArmorStandEntity) target;
+            if (target instanceof ArmorStand) {
+                ArmorStand armorStand = (ArmorStand) target;
                 if (!armorStand.isInvisible() && ArmorStandUtil.armorStandHasItems(armorStand)) {
                     armorStand.setInvisible(true);
                     projectile.remove(RemovalReason.DISCARDED);
                     applied = true;
                 }
-            } else if (target instanceof ItemFrameEntity) {
-                ItemFrameEntity itemFrame = (ItemFrameEntity) target;
+            } else if (target instanceof ItemFrame) {
+                ItemFrame itemFrame = (ItemFrame) target;
                 if (!itemFrame.isInvisible() && ItemFrameUtil.itemFrameHasItem(itemFrame)) {
                     itemFrame.setInvisible(true);
                     projectile.remove(RemovalReason.DISCARDED);
@@ -49,15 +48,15 @@ public class ListenerMakeInvis {
             }
 
             if (applied) {
-                ArrowEntity arrow = (ArrowEntity) projectile;
-                Entity source = arrow.getEffectCause();
-                if (source instanceof ServerPlayerEntity) {
-                    ServerPlayerEntity player = (ServerPlayerEntity) source;
-                    PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.ENTITY_ARROW_HIT_PLAYER, SoundCategory.BLOCKS, 0.5f, 1.0f);
+                Arrow arrow = (Arrow) projectile;
+                Entity source = arrow.getEffectSource();
+                if (source instanceof ServerPlayer) {
+                    ServerPlayer player = (ServerPlayer) source;
+                    PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.ARROW_HIT_PLAYER, SoundSource.BLOCKS, 0.5f, 1.0f);
                 }
-                return ActionResult.FAIL;
+                return InteractionResult.FAIL;
             }
         }
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 }

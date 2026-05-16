@@ -2,22 +2,22 @@ package com.chellrose.chellcraft.callbacks;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.entity.projectile.thrown.PotionEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.ActionResult;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.projectile.throwableitemprojectile.AbstractThrownPotion;
 
 public interface SplashWaterPotionCallback {
     Event<SplashWaterPotionCallback> EVENT = EventFactory.createArrayBacked(SplashWaterPotionCallback.class,
     (listeners) -> (potion, world) -> {
         for (SplashWaterPotionCallback listener : listeners) {
-            ActionResult result = listener.onSplashWaterPotion(potion, world);
+            InteractionResult result = listener.onSplashWaterPotion(potion, world);
 
-            if (result != ActionResult.PASS) {
+            if (result != InteractionResult.PASS) {
                 return result;
             }
         }
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     });
 
-    ActionResult onSplashWaterPotion(PotionEntity potion, ServerWorld world);
+    InteractionResult onSplashWaterPotion(AbstractThrownPotion potion, ServerLevel world);
 }

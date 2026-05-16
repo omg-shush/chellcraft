@@ -3,12 +3,12 @@ package com.chellrose.chellcraft.features.hat;
 import com.mojang.brigadier.context.CommandContext;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 
 public class CommandHat {
 
@@ -17,21 +17,21 @@ public class CommandHat {
 
     public CommandHat() {
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> dispatcher.register(
-            CommandManager.literal(COMMAND).executes(context -> this.hat(context))));
+            Commands.literal(COMMAND).executes(context -> this.hat(context))));
     }
 
-    public int hat(CommandContext<ServerCommandSource> context) {
-        ServerPlayerEntity player = context.getSource().getPlayer();
+    public int hat(CommandContext<CommandSourceStack> context) {
+        ServerPlayer player = context.getSource().getPlayer();
         if (player == null) {
-            context.getSource().sendFeedback(() -> Text.literal("You must be a player to use this command"), false);
+            context.getSource().sendSuccess(() -> Component.literal("You must be a player to use this command"), false);
             return -1;
         }
-        PlayerInventory inventory = player.getInventory();
-        ItemStack mainHand = inventory.getStack(inventory.getSelectedSlot());
-        ItemStack head = inventory.getStack(HELMET_ARMOR_INDEX);
-        inventory.setStack(inventory.getSelectedSlot(), head);
-        inventory.setStack(HELMET_ARMOR_INDEX, mainHand);
-        player.sendMessage(Text.literal("It's on your head now!").styled(style -> style.withItalic(true)));
+        Inventory inventory = player.getInventory();
+        ItemStack mainHand = inventory.getItem(inventory.getSelectedSlot());
+        ItemStack head = inventory.getItem(HELMET_ARMOR_INDEX);
+        inventory.setItem(inventory.getSelectedSlot(), head);
+        inventory.setItem(HELMET_ARMOR_INDEX, mainHand);
+        player.sendSystemMessage(Component.literal("It's on your head now!").withStyle(style -> style.withItalic(true)));
         return 1;
     }
 }

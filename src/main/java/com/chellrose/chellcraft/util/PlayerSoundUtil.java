@@ -1,17 +1,17 @@
 package com.chellrose.chellcraft.util;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
-import net.minecraft.registry.Registries;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.protocol.game.ClientboundSoundPacket;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Player;
 
 public class PlayerSoundUtil {
-    public static void playSoundToPlayer(PlayerEntity player, SoundEvent soundEvent, SoundCategory category, float volume, float pitch) {
-        ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
-        serverPlayer.networkHandler.sendPacket(new PlaySoundS2CPacket(
-            Registries.SOUND_EVENT.getEntry(soundEvent),
+    public static void playSoundToPlayer(Player player, SoundEvent soundEvent, SoundSource category, float volume, float pitch) {
+        ServerPlayer serverPlayer = (ServerPlayer) player;
+        serverPlayer.connection.send(new ClientboundSoundPacket(
+            BuiltInRegistries.SOUND_EVENT.wrapAsHolder(soundEvent),
             category,
             player.getX(),
             player.getY(),

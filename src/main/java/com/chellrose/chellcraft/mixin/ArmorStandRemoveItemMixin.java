@@ -1,25 +1,24 @@
 package com.chellrose.chellcraft.mixin;
 
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.decoration.ArmorStandEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.chellrose.chellcraft.callbacks.ArmorStandRemoveItemCallback;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 
-@Mixin(ArmorStandEntity.class)
+@Mixin(ArmorStand.class)
 public class ArmorStandRemoveItemMixin {
-	@Inject(at = @At("RETURN"), method = "equip")
-	private void onArmorStandEquip(PlayerEntity player, EquipmentSlot slot, ItemStack stack, Hand hand, CallbackInfoReturnable<Boolean> info) {
+	@Inject(at = @At("RETURN"), method = "swapItem")
+	private void onArmorStandEquip(Player player, EquipmentSlot slot, ItemStack stack, InteractionHand hand, CallbackInfoReturnable<Boolean> info) {
 		if ((stack.isEmpty() || stack.getCount() <= 1) && info.getReturnValue()) {
-			ArmorStandRemoveItemCallback.EVENT.invoker().onArmorStandUnequip((ArmorStandEntity) (Object) this, player);
+			ArmorStandRemoveItemCallback.EVENT.invoker().onArmorStandUnequip((ArmorStand) (Object) this, player);
 		}
 		// No fail implemented
 	}

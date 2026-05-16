@@ -4,3 +4,7 @@
 4. Update 'fabric-loom' version at top of build.gradle
 5. Refresh `./gradlew genSources`
 6. Rebuild with `./gradlew build`
+
+---
+
+[One-time migration to Mojang official mappings](https://docs.fabricmc.net/develop/porting/)

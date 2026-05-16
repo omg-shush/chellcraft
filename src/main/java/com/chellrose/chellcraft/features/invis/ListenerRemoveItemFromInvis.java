@@ -9,18 +9,17 @@ import com.chellrose.chellcraft.callbacks.ItemFrameRemoveItemCallback;
 import com.chellrose.chellcraft.util.ArmorStandUtil;
 import com.chellrose.chellcraft.util.ItemFrameUtil;
 import com.chellrose.chellcraft.util.PlayerSoundUtil;
-
-import net.minecraft.block.Block;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.entity.Entity.RemovalReason;
-import net.minecraft.entity.decoration.ArmorStandEntity;
-import net.minecraft.entity.decoration.ItemFrameEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.ActionResult;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity.RemovalReason;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.decoration.ItemFrame;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
 
 public class ListenerRemoveItemFromInvis {
     public static final Logger LOGGER = ChellCraft.LOGGER;
@@ -30,29 +29,29 @@ public class ListenerRemoveItemFromInvis {
         ItemFrameRemoveItemCallback.EVENT.register(this::itemFrameRemoveItem);
     }
 
-    private ActionResult armorStandRemoveItem(ArmorStandEntity armorStand, PlayerEntity player) {
+    private InteractionResult armorStandRemoveItem(ArmorStand armorStand, Player player) {
         if (armorStand.isInvisible() && !ArmorStandUtil.armorStandHasItems(armorStand)) {
             armorStand.remove(RemovalReason.DISCARDED);
             ItemStack itemStack = new ItemStack(Items.ARMOR_STAND);
-            itemStack.set(DataComponentTypes.CUSTOM_NAME, armorStand.getCustomName());
-            Block.dropStack(armorStand.getEntityWorld(), armorStand.getBlockPos(), itemStack);
+            itemStack.set(DataComponents.CUSTOM_NAME, armorStand.getCustomName());
+            Block.popResource(armorStand.level(), armorStand.blockPosition(), itemStack);
             if (player != null) {
-                PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.ENTITY_VILLAGER_NO, SoundCategory.BLOCKS, 0.5f, 1.0f);
+                PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.VILLAGER_NO, SoundSource.BLOCKS, 0.5f, 1.0f);
             }
-            return ActionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 
-    private ActionResult itemFrameRemoveItem(ItemFrameEntity itemFrame, @Nullable PlayerEntity player) {
-        if (itemFrame.isInvisible() && itemFrame.getHeldItemStack().isEmpty()) {
+    private InteractionResult itemFrameRemoveItem(ItemFrame itemFrame, @Nullable Player player) {
+        if (itemFrame.isInvisible() && itemFrame.getItem().isEmpty()) {
             itemFrame.remove(RemovalReason.DISCARDED);
-            Block.dropStack(itemFrame.getEntityWorld(), itemFrame.getBlockPos(), ItemFrameUtil.getAsItemStack(itemFrame));
+            Block.popResource(itemFrame.level(), itemFrame.blockPosition(), ItemFrameUtil.getAsItemStack(itemFrame));
             if (player != null) {
-                PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.ENTITY_VILLAGER_NO, SoundCategory.BLOCKS, 0.5f, 1.0f);
+                PlayerSoundUtil.playSoundToPlayer(player, SoundEvents.VILLAGER_NO, SoundSource.BLOCKS, 0.5f, 1.0f);
             }
-            return ActionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 }

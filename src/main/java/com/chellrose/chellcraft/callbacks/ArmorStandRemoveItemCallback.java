@@ -2,22 +2,22 @@ package com.chellrose.chellcraft.callbacks;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.entity.decoration.ArmorStandEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ActionResult;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.player.Player;
 
 public interface ArmorStandRemoveItemCallback {
     Event<ArmorStandRemoveItemCallback> EVENT = EventFactory.createArrayBacked(ArmorStandRemoveItemCallback.class,
     (listeners) -> (armorStand, player) -> {
         for (ArmorStandRemoveItemCallback listener : listeners) {
-            ActionResult result = listener.onArmorStandUnequip(armorStand, player);
+            InteractionResult result = listener.onArmorStandUnequip(armorStand, player);
 
-            if (result != ActionResult.PASS) {
+            if (result != InteractionResult.PASS) {
                 return result;
             }
         }
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     });
 
-    ActionResult onArmorStandUnequip(ArmorStandEntity armorStand, PlayerEntity player);
+    InteractionResult onArmorStandUnequip(ArmorStand armorStand, Player player);
 }

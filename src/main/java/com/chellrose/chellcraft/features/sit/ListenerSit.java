@@ -14,37 +14,37 @@ import com.google.common.collect.Multimap;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.CampfireBlock;
-import net.minecraft.block.EndRodBlock;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.enums.BlockHalf;
-import net.minecraft.block.enums.SlabType;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.attribute.EntityAttributeModifier.Operation;
-import net.minecraft.entity.Entity.RemovalReason;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.passive.BeeEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Entity.RemovalReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.bee.Bee;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.CampfireBlock;
+import net.minecraft.world.level.block.EndRodBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.block.state.properties.SlabType;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 
 public class ListenerSit {
 
@@ -63,19 +63,19 @@ public class ListenerSit {
         ServerLifecycleEvents.SERVER_STOPPING.register(this::stopping);
     }
 
-    private ActionResult sit(PlayerEntity player, World world, Hand hand, BlockHitResult hitResult) {
+    private InteractionResult sit(Player player, Level world, InteractionHand hand, BlockHitResult hitResult) {
         long currentTime = System.currentTimeMillis();
-        UUID uuid = player.getUuid();
+        UUID uuid = player.getUUID();
         if (!this.lastSit.containsKey(uuid) || currentTime - this.lastSit.get(uuid) > 1_000) {
-            if (hand.equals(Hand.MAIN_HAND) && player.getStackInHand(hand).isEmpty()) {
+            if (hand.equals(InteractionHand.MAIN_HAND) && player.getItemInHand(hand).isEmpty()) {
                 BlockState b = world.getBlockState(hitResult.getBlockPos());
-                String key = b.getBlock().getTranslationKey();
-                boolean validStairs = key.contains("stairs") && b.get(StairsBlock.HALF) == BlockHalf.BOTTOM;
-                boolean validSlab = key.contains("slab") && b.get(SlabBlock.TYPE) == SlabType.BOTTOM;
-                boolean validCampfire = key.equals("block.minecraft.campfire") && !b.get(CampfireBlock.LIT);
-                boolean validEndRod = key.equals("block.minecraft.end_rod") && b.get(EndRodBlock.FACING) != Direction.DOWN && b.get(EndRodBlock.FACING) != Direction.UP;
-                boolean topFace = hitResult.getSide() == Direction.UP;
-                boolean opaqueAbove = world.getBlockState(hitResult.getBlockPos().up()).isOpaque();
+                String key = b.getBlock().getDescriptionId();
+                boolean validStairs = key.contains("stairs") && b.getValue(StairBlock.HALF) == Half.BOTTOM;
+                boolean validSlab = key.contains("slab") && b.getValue(SlabBlock.TYPE) == SlabType.BOTTOM;
+                boolean validCampfire = key.equals("block.minecraft.campfire") && !b.getValue(CampfireBlock.LIT);
+                boolean validEndRod = key.equals("block.minecraft.end_rod") && b.getValue(EndRodBlock.FACING) != Direction.DOWN && b.getValue(EndRodBlock.FACING) != Direction.UP;
+                boolean topFace = hitResult.getDirection() == Direction.UP;
+                boolean opaqueAbove = world.getBlockState(hitResult.getBlockPos().above()).canOcclude();
                 boolean support = false;
                 BlockPos[] adjacentBlocks = new BlockPos[] {
                     hitResult.getBlockPos().north(),
@@ -84,65 +84,65 @@ public class ListenerSit {
                     hitResult.getBlockPos().west()
                 };
                 for (BlockPos pos : adjacentBlocks) {
-                    String t = world.getBlockState(pos).getBlock().getTranslationKey();
+                    String t = world.getBlockState(pos).getBlock().getDescriptionId();
                     if (t.contains("sign") || t.contains("trapdoor")) {
                         support = true;
                         break;
                     }
                 }
                 if (topFace && !opaqueAbove && support && (validStairs || validSlab || validCampfire || validEndRod)) {
-                    BeeEntity bee = new BeeEntity(EntityType.BEE, world);
-                    bee.setPosition(hitResult.getBlockPos().toBottomCenterPos().add(0.0, DELTA_Y, 0.0));
-                    bee.setYaw((player.getYaw() + 180.0F) % 360.0F);
-                    bee.setBodyYaw(bee.getYaw());
-                    bee.setHeadYaw(bee.getYaw());
+                    Bee bee = new Bee(EntityType.BEE, world);
+                    bee.setPos(hitResult.getBlockPos().getBottomCenter().add(0.0, DELTA_Y, 0.0));
+                    bee.setYRot((player.getYRot() + 180.0F) % 360.0F);
+                    bee.setYBodyRot(bee.getYRot());
+                    bee.setYHeadRot(bee.getYRot());
                     bee.setNoGravity(true);
-                    bee.setVelocity(Vec3d.ZERO);
+                    bee.setDeltaMovement(Vec3.ZERO);
                     bee.setInvulnerable(true);
                     bee.setSilent(true);
                     bee.setInvisible(true);
-                    bee.setAiDisabled(true);
-                    Multimap<RegistryEntry<EntityAttribute>,EntityAttributeModifier> multimap = HashMultimap.create();
-                    multimap.put(EntityAttributes.SCALE, new EntityAttributeModifier(Identifier.of("generic.scale"), 0.0625 - 1.0, Operation.ADD_MULTIPLIED_BASE));
-                    multimap.put(EntityAttributes.ATTACK_DAMAGE, new EntityAttributeModifier(Identifier.of("generic.attack_damage"), -1.0, Operation.ADD_MULTIPLIED_BASE));
-                    bee.getAttributes().addTemporaryModifiers(multimap);
-                    bee.addStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, -1, 1, true, false, false));
-                    bee.addCommandTag(SEAT_TAG);
-                    world.spawnEntity(bee);
+                    bee.setNoAi(true);
+                    Multimap<Holder<Attribute>,AttributeModifier> multimap = HashMultimap.create();
+                    multimap.put(Attributes.SCALE, new AttributeModifier(Identifier.parse("generic.scale"), 0.0625 - 1.0, Operation.ADD_MULTIPLIED_BASE));
+                    multimap.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(Identifier.parse("generic.attack_damage"), -1.0, Operation.ADD_MULTIPLIED_BASE));
+                    bee.getAttributes().addTransientAttributeModifiers(multimap);
+                    bee.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, -1, 1, true, false, false));
+                    bee.addTag(SEAT_TAG);
+                    world.addFreshEntity(bee);
                     player.startRiding(bee);
                     this.lastSit.put(uuid, currentTime);
                 }
             }
         }
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 
-    private ActionResult stand(Entity passenger, Entity mount) {
-        if (passenger instanceof ServerPlayerEntity) {
-            ServerPlayerEntity player = (ServerPlayerEntity) passenger;
-            if (mount instanceof BeeEntity) {
-                BeeEntity bee = (BeeEntity) mount;
-                if (bee.getCommandTags().contains(SEAT_TAG)) {
+    private InteractionResult stand(Entity passenger, Entity mount) {
+        if (passenger instanceof ServerPlayer) {
+            ServerPlayer player = (ServerPlayer) passenger;
+            if (mount instanceof Bee) {
+                Bee bee = (Bee) mount;
+                if (bee.entityTags().contains(SEAT_TAG)) {
                     player.stopRiding();
-                    player.setPosition(mount.getEntityPos().add(0.0, 1.0 - DELTA_Y, 0.0));
+                    player.setPos(mount.position().add(0.0, 1.0 - DELTA_Y, 0.0));
                     mount.remove(RemovalReason.DISCARDED);
                 }
             }
         }
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 
-    private ActionResult disconnect(ServerPlayNetworkHandler handler, MinecraftServer server) {
+    private InteractionResult disconnect(ServerGamePacketListenerImpl handler, MinecraftServer server) {
         if (handler.player != null) {
             handler.player.stopRiding();
         }
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 
-    private ActionResult stopping(MinecraftServer server) {
+    private InteractionResult stopping(MinecraftServer server) {
         int count = 0;
-        for (ServerWorld world : server.getWorlds()) {
-            for (BeeEntity entity : world.getEntitiesByType(EntityType.BEE, (bee) -> bee.getCommandTags().contains(SEAT_TAG))) {
+        for (ServerLevel world : server.getAllLevels()) {
+            for (Bee entity : world.getEntities(EntityType.BEE, (bee) -> bee.entityTags().contains(SEAT_TAG))) {
                 entity.remove(RemovalReason.DISCARDED);
                 count++;
             }
@@ -150,6 +150,6 @@ public class ListenerSit {
         if (count > 0) {
             LOGGER.warn("chellcraft: Removed " + count + " seats");
         }
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 }
