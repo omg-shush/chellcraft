@@ -19,6 +19,7 @@ import com.chellrose.chellcraft.features.invis.ListenerMakeInvis;
 import com.chellrose.chellcraft.features.invis.ListenerRemoveItemFromInvis;
 import com.chellrose.chellcraft.features.invis.ListenerWashInvis;
 import com.chellrose.chellcraft.features.sit.ListenerSit;
+import com.chellrose.chellcraft.features.wrench.ListenerWrenchArmorStand;
 import com.chellrose.chellcraft.features.wrench.ListenerWrenchPlace;
 
 public class ChellCraft implements ModInitializer {
@@ -50,6 +51,7 @@ public class ChellCraft implements ModInitializer {
 		@NonNull ModContainer thisContainer = Objects.requireNonNull(FabricLoader.getInstance().getModContainer(MOD_ID).get());
 		ResourceLoader.registerBuiltinPack(ChellCraftDataGenerator.WRENCH_RECIPE_PACK_ID, thisContainer, PackActivationType.ALWAYS_ENABLED);
 		new ListenerWrenchPlace();
+		new ListenerWrenchArmorStand();
 
 		LOGGER.info("Ready for liftoff!");
 	}
