@@ -159,19 +159,29 @@ public class ArmorStandPose {
      * @param armorStand the ArmorStandEntity to apply this pose to
      */
     public void apply(ArmorStand armorStand) {
-        armorStand.setHeadPose(this.headAngles);
-        armorStand.setLeftArmPose(this.leftArmAngles);
-        armorStand.setRightArmPose(this.rightArmAngles);
-        armorStand.setLeftLegPose(this.leftLegAngles);
-        armorStand.setRightLegPose(this.rightLegAngles);
+        if (this.headAngles != null) {
+            armorStand.setHeadPose(this.headAngles);
+        }
+        if (this.leftArmAngles != null) {
+            armorStand.setLeftArmPose(this.leftArmAngles);
+        }
+        if (this.rightArmAngles != null) {
+            armorStand.setRightArmPose(this.rightArmAngles);
+        }
+        if (this.leftLegAngles != null) {
+            armorStand.setLeftLegPose(this.leftLegAngles);
+        }
+        if (this.rightLegAngles != null) {
+            armorStand.setRightLegPose(this.rightLegAngles);
+        }
     }
 
     public boolean equals(ArmorStandPose other) {
-        return this.headAngles.equals(other.headAngles) &&
-               this.leftArmAngles.equals(other.leftArmAngles) &&
-               this.rightArmAngles.equals(other.rightArmAngles) &&
-               this.leftLegAngles.equals(other.leftLegAngles) &&
-               this.rightLegAngles.equals(other.rightLegAngles);
+        return other.headAngles != null && this.headAngles.equals(other.headAngles) &&
+               other.leftArmAngles != null && this.leftArmAngles.equals(other.leftArmAngles) &&
+               other.rightArmAngles != null && this.rightArmAngles.equals(other.rightArmAngles) &&
+               other.leftLegAngles != null && this.leftLegAngles.equals(other.leftLegAngles) &&
+               other.rightLegAngles != null && this.rightLegAngles.equals(other.rightLegAngles);
     }
 
     /**

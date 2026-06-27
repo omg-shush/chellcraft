@@ -1,6 +1,7 @@
 package com.chellrose.chellcraft.features.help;
 
 import java.net.URI;
+import java.util.Objects;
 
 import com.mojang.brigadier.context.CommandContext;
 
@@ -22,7 +23,7 @@ public class CommandHelp {
 
     public int help(CommandContext<CommandSourceStack> context) {
         context.getSource().sendSystemMessage(Component.literal("[Click for ChellCraft documentation]").withStyle(style -> style
-            .withClickEvent(new ClickEvent.OpenUrl(URI.create("https://github.com/omg-shush/chellcraft/blob/main/README.md")))
+            .withClickEvent(new ClickEvent.OpenUrl(Objects.requireNonNull(URI.create("https://github.com/omg-shush/chellcraft/blob/main/README.md"))))
             .withUnderlined(true)
             .withColor(ChatFormatting.LIGHT_PURPLE)));
         return 0;

@@ -2,8 +2,10 @@ package com.chellrose.chellcraft.features.sit;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 
 import com.chellrose.chellcraft.ChellCraft;
@@ -63,7 +65,7 @@ public class ListenerSit {
         ServerLifecycleEvents.SERVER_STOPPING.register(this::stopping);
     }
 
-    private InteractionResult sit(Player player, Level world, InteractionHand hand, BlockHitResult hitResult) {
+    private @NonNull InteractionResult sit(Player player, Level world, InteractionHand hand, BlockHitResult hitResult) {
         long currentTime = System.currentTimeMillis();
         UUID uuid = player.getUUID();
         if (!this.lastSit.containsKey(uuid) || currentTime - this.lastSit.get(uuid) > 1_000) {
@@ -84,7 +86,7 @@ public class ListenerSit {
                     hitResult.getBlockPos().west()
                 };
                 for (BlockPos pos : adjacentBlocks) {
-                    String t = world.getBlockState(pos).getBlock().getDescriptionId();
+                    String t = world.getBlockState(Objects.requireNonNull(pos)).getBlock().getDescriptionId();
                     if (t.contains("sign") || t.contains("trapdoor")) {
                         support = true;
                         break;
@@ -109,15 +111,16 @@ public class ListenerSit {
                     bee.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, -1, 1, true, false, false));
                     bee.addTag(SEAT_TAG);
                     world.addFreshEntity(bee);
-                    player.startRiding(bee);
+                    Objects.requireNonNull(world.getServer()).execute(() -> player.startRiding(bee, false, false));
                     this.lastSit.put(uuid, currentTime);
+                    return InteractionResult.SUCCESS;
                 }
             }
         }
         return InteractionResult.PASS;
     }
 
-    private InteractionResult stand(Entity passenger, Entity mount) {
+    private @NonNull InteractionResult stand(Entity passenger, Entity mount) {
         if (passenger instanceof ServerPlayer) {
             ServerPlayer player = (ServerPlayer) passenger;
             if (mount instanceof Bee) {
@@ -132,18 +135,18 @@ public class ListenerSit {
         return InteractionResult.PASS;
     }
 
-    private InteractionResult disconnect(ServerGamePacketListenerImpl handler, MinecraftServer server) {
+    private @NonNull InteractionResult disconnect(ServerGamePacketListenerImpl handler, MinecraftServer server) {
         if (handler.player != null) {
             handler.player.stopRiding();
         }
         return InteractionResult.PASS;
     }
 
-    private InteractionResult stopping(MinecraftServer server) {
+    private @NonNull InteractionResult stopping(MinecraftServer server) {
         int count = 0;
         for (ServerLevel world : server.getAllLevels()) {
             for (Bee entity : world.getEntities(EntityType.BEE, (bee) -> bee.entityTags().contains(SEAT_TAG))) {
-                entity.remove(RemovalReason.DISCARDED);
+                Objects.requireNonNull(entity).remove(RemovalReason.DISCARDED);
                 count++;
             }
         }

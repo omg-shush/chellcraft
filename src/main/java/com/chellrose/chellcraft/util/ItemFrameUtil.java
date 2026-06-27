@@ -1,5 +1,7 @@
 package com.chellrose.chellcraft.util;
 
+import org.jspecify.annotations.NonNull;
+
 import net.minecraft.world.entity.decoration.GlowItemFrame;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.item.ItemStack;
@@ -10,7 +12,7 @@ public class ItemFrameUtil {
         return !itemFrame.getItem().isEmpty();
     }
 
-    public static ItemStack getAsItemStack(ItemFrame itemFrame) {
+    public static @NonNull ItemStack getAsItemStack(ItemFrame itemFrame) {
         if (itemFrame instanceof GlowItemFrame) {
             return new ItemStack(Items.GLOW_ITEM_FRAME);
         }

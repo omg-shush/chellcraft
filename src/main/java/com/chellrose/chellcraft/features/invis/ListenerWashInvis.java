@@ -12,6 +12,8 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.projectile.throwableitemprojectile.AbstractThrownPotion;
 import net.minecraft.world.phys.AABB;
+
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 
 import com.chellrose.chellcraft.ChellCraft;
@@ -27,7 +29,7 @@ public class ListenerWashInvis {
     private InteractionResult splashWaterWashInvis(AbstractThrownPotion potion, ServerLevel world) {
         AABB box = potion.getBoundingBox().inflate(4.0, 2.0, 4.0);
         boolean success = false;
-		for (Entity entity : world.getEntitiesOfClass(Entity.class, box, this.isInRange(potion).and(this::isWashable))) {
+		for (Entity entity : world.getEntitiesOfClass(Entity.class, box, entity -> this.isInRange(potion).test(entity) && this.isWashable().test(entity))) {
             success = true;
             if (entity.getType() == EntityType.ARMOR_STAND || entity.getType() == EntityType.ITEM_FRAME || entity.getType() == EntityType.GLOW_ITEM_FRAME) {
                 entity.setInvisible(false);
@@ -41,11 +43,11 @@ public class ListenerWashInvis {
         return success ? InteractionResult.SUCCESS : InteractionResult.PASS;
     }
 
-    private Predicate<Entity> isInRange(AbstractThrownPotion potion) {
+    private @NonNull Predicate<@NonNull Entity> isInRange(@NonNull AbstractThrownPotion potion) {
         return entity -> potion.distanceToSqr(entity) < 16.0;
     }
 
-    private boolean isWashable(Entity entity) {
-        return entity instanceof ArmorStand || entity instanceof ItemFrame || entity instanceof LivingEntity;
+    private @NonNull Predicate<@NonNull Entity> isWashable() {
+        return entity -> entity instanceof ArmorStand || entity instanceof ItemFrame || entity instanceof LivingEntity;
     }
 }

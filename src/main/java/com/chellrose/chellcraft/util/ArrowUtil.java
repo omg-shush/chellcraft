@@ -1,5 +1,7 @@
 package com.chellrose.chellcraft.util;
 
+import java.util.Objects;
+
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -13,7 +15,7 @@ public class ArrowUtil {
             Arrow arrow = (Arrow) projectile;
             PotionContents potion = arrow.getPickupItemStackOrigin().get(DataComponents.POTION_CONTENTS);
             if (potion != null) {
-                return potion.is(BuiltInRegistries.POTION.get(Identifier.withDefaultNamespace("invisibility")).get());
+                return potion.is(Objects.requireNonNull(BuiltInRegistries.POTION.get(Identifier.withDefaultNamespace("invisibility")).get()));
             }
         }
         return false;

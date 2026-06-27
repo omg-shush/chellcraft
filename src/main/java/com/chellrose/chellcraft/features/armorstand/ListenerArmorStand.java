@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 
 import com.chellrose.chellcraft.ChellCraft;
@@ -27,7 +28,7 @@ import net.minecraft.world.phys.EntityHitResult;
 public class ListenerArmorStand {
     public static final Logger LOGGER = ChellCraft.LOGGER;
 
-    private static final List<Item> PICKAXES = Arrays.asList(
+    private static final List<@NonNull Item> PICKAXES = Arrays.asList(
         Items.WOODEN_PICKAXE,
         Items.STONE_PICKAXE,
         Items.IRON_PICKAXE,
@@ -40,11 +41,8 @@ public class ListenerArmorStand {
         UseEntityCallback.EVENT.register(this::useEntity);
     }
 
-    private InteractionResult useEntity(Player player, Level world, InteractionHand hand, Entity entity, @Nullable EntityHitResult hitResult) {
-        if (entity.getType() != EntityType.ARMOR_STAND) {
-            return InteractionResult.PASS;
-        }
-        if (!player.isShiftKeyDown()) {
+    private @NonNull InteractionResult useEntity(Player player, Level world, InteractionHand hand, Entity entity, @Nullable EntityHitResult hitResult) {
+        if (entity.getType() != EntityType.ARMOR_STAND || !player.isShiftKeyDown() || hand == null) {
             return InteractionResult.PASS;
         }
 
@@ -68,7 +66,7 @@ public class ListenerArmorStand {
         return result;
     }
 
-    private InteractionResult addArms(Player player, InteractionHand hand, ArmorStand armorStand) {
+    private @NonNull InteractionResult addArms(Player player, @NonNull InteractionHand hand, ArmorStand armorStand) {
         // Add arms to the armor stand with 2 sticks
         ItemStack handStack = player.getItemInHand(hand);
         if (!armorStand.showArms() && handStack.getCount() >= 2) {
@@ -83,7 +81,7 @@ public class ListenerArmorStand {
         return InteractionResult.PASS;
     }
 
-    private InteractionResult removeArms(Player player, InteractionHand hand, ArmorStand armorStand) {
+    private @NonNull InteractionResult removeArms(Player player, @NonNull InteractionHand hand, ArmorStand armorStand) {
         // Remove arms from the armor stand with shears, and drop any held items
         if (armorStand.showArms()) {
             player.getItemInHand(hand).hurtAndBreak(2, player, hand);
@@ -104,7 +102,7 @@ public class ListenerArmorStand {
         return InteractionResult.PASS;
     }
 
-    private InteractionResult addBasePlate(Player player, InteractionHand hand, ArmorStand armorStand) {
+    private @NonNull InteractionResult addBasePlate(Player player, @NonNull InteractionHand hand, ArmorStand armorStand) {
         // Add a base plate to the armor stand with a smooth stone slab
         ItemStack handStack = player.getItemInHand(hand);
         if (!armorStand.showBasePlate()) {
@@ -119,7 +117,7 @@ public class ListenerArmorStand {
         return InteractionResult.PASS;
     }
 
-    private InteractionResult removeBasePlate(Player player, InteractionHand hand, ArmorStand armorStand) {
+    private @NonNull InteractionResult removeBasePlate(Player player, @NonNull InteractionHand hand, ArmorStand armorStand) {
         // Remove a base plate from the armor stand with a pickaxe
         if (armorStand.showBasePlate()) {
             player.getItemInHand(hand).hurtAndBreak(1, player, hand);
@@ -130,7 +128,7 @@ public class ListenerArmorStand {
         return InteractionResult.PASS;
     }
 
-    private InteractionResult applyPose(Player player, InteractionHand hand, ArmorStand armorStand) {
+    private @NonNull InteractionResult applyPose(Player player, @NonNull InteractionHand hand, ArmorStand armorStand) {
         // Apply a pose to the armor stand without consuming the music disc
         Item item = player.getItemInHand(hand).getItem();
         if (ArmorStandPose.MUSIC_DISC_POSES.containsKey(item)) {
@@ -141,7 +139,7 @@ public class ListenerArmorStand {
         return InteractionResult.PASS;
     }
 
-    private InteractionResult cyclePose(Player player, InteractionHand hand, ArmorStand armorStand) {
+    private @NonNull InteractionResult cyclePose(Player player, @NonNull InteractionHand hand, ArmorStand armorStand) {
         // Cycle through the available poses for the armor stand
         ArmorStandPose currentPose = new ArmorStandPose(armorStand);
         ArmorStandPose nextPose = ArmorStandPose.fromIndex(currentPose.index() + 1);
