@@ -18,6 +18,7 @@ import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.CustomData;
@@ -75,5 +76,20 @@ public class WrenchItem {
         wrenchBuilder.set(DataComponents.LORE, lore);
 
         return new ItemStackTemplate(WRENCH_MATERIAL, wrenchBuilder.build());
+    }
+
+    public static boolean isWrench(ItemStack item) {
+        if (item == null || item.isEmpty()) {
+            return false;
+        }
+        if (item.getItem() != WRENCH_MATERIAL) {
+            return false;
+        }
+        CustomData data = item.get(DataComponents.CUSTOM_DATA);
+        if (data == null) {
+            return false;
+        }
+        CompoundTag tag = data.copyTag();
+        return tag.getBoolean(IS_WRENCH_KEY).orElse(false);
     }
 }
