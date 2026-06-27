@@ -1,7 +1,14 @@
 package com.chellrose.chellcraft;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
+import net.fabricmc.fabric.api.resource.v1.pack.PackActivationType;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
 
+import java.util.Objects;
+
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +26,7 @@ public class ChellCraft implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		LOGGER.info("Hello Fabric world!");
+		LOGGER.info("Initializing ChellCraft...");
 
 		// Register the hat command
 		new CommandHat();
@@ -37,5 +44,11 @@ public class ChellCraft implements ModInitializer {
 
 		// Register the armor stand modification feature
 		new ListenerArmorStand();
+
+		// Register the wrench feature
+		@NonNull ModContainer thisContainer = Objects.requireNonNull(FabricLoader.getInstance().getModContainer(MOD_ID).get());
+		ResourceLoader.registerBuiltinPack(ChellCraftDataGenerator.WRENCH_RECIPE_PACK_ID, thisContainer, PackActivationType.ALWAYS_ENABLED);
+
+		LOGGER.info("Ready for liftoff!");
 	}
 }

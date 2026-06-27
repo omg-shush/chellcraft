@@ -1,0 +1,80 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "wrenches",
+  "key": {
+    "c": "minecraft:end_crystal",
+    "r": "minecraft:end_rod"
+  },
+  "pattern": [
+    " c",
+    "r "
+  ],
+  "result": {
+    "components": {
+      "minecraft:attribute_modifiers": [],
+      "minecraft:custom_data": {
+        "caa_wrench": 1
+      },
+      "minecraft:custom_name": {
+        "bold": true,
+        "color": "#D468CB",
+        "italic": false,
+        "text": "Turbo Encabulator"
+      },
+      "minecraft:enchantment_glint_override": true,
+      "minecraft:lore": [
+        {
+          "color": "#CCCCCC",
+          "italic": false,
+          "text": "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
+        },
+        {
+          "color": "#118686",
+          "italic": true,
+          "text": "   For a number of years now, work has been proceeding in order to bring "
+        },
+        {
+          "color": "#118686",
+          "italic": true,
+          "text": "   perfection to the crudely conceived idea of a transmission that would not only "
+        },
+        {
+          "color": "#118686",
+          "italic": true,
+          "text": "   supply inverse reactive current for use in unilateral phase detractors, but "
+        },
+        {
+          "color": "#118686",
+          "italic": true,
+          "text": "   would also be capable of automatically synchronizing cardinal grammeters. "
+        },
+        {
+          "color": "#118686",
+          "extra": [
+            {
+              "bold": true,
+              "color": "#D468CB",
+              "italic": false,
+              "text": "Turbo Encabulator"
+            },
+            {
+              "color": "#118686",
+              "italic": true,
+              "text": "."
+            }
+          ],
+          "italic": true,
+          "text": "   Such an instrument is the "
+        },
+        {
+          "color": "#CCCCCC",
+          "italic": false,
+          "text": "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+        }
+      ],
+      "minecraft:unbreakable": {}
+    },
+    "id": "minecraft:tripwire_hook"
+  }
+}
