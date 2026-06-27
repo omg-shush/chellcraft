@@ -1,15 +1,21 @@
 package com.chellrose.chellcraft.features.wrench;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 
 import com.chellrose.chellcraft.ChellCraft;
+import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
@@ -24,6 +30,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.ItemLore;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class WrenchItem {
     public static final Logger LOGGER = ChellCraft.LOGGER;
@@ -91,5 +98,36 @@ public class WrenchItem {
         }
         CompoundTag tag = data.copyTag();
         return tag.getBoolean(IS_WRENCH_KEY).orElse(false);
+    }
+
+    @SuppressWarnings("null")
+    public static void setBlockState(ItemStack wrench, String clazz, BlockState state) {
+        Optional<@NonNull Tag> encoded = BlockState.CODEC.encode(state, NbtOps.INSTANCE, NbtOps.INSTANCE.empty()).result();
+        if (encoded.isPresent()) {
+            Tag encodedState = encoded.get();
+            CompoundTag customDataTag = wrench.get(DataComponents.CUSTOM_DATA).copyTag();
+            CompoundTag blockDataTag = customDataTag.getCompoundOrEmpty(BLOCK_DATA_KEY);
+            blockDataTag.put(clazz, encodedState);
+            customDataTag.put(BLOCK_DATA_KEY, blockDataTag);
+            wrench.set(DataComponents.CUSTOM_DATA, CustomData.of(customDataTag));
+        }
+    }
+
+    @SuppressWarnings("null")
+    public static @Nullable BlockState getBlockState(ItemStack wrench, String clazz) {
+        CompoundTag customDataTag = Objects.requireNonNull(wrench.get(DataComponents.CUSTOM_DATA)).copyTag();
+        Optional<CompoundTag> maybeBlockDataTag = customDataTag.getCompound(BLOCK_DATA_KEY);
+        if (maybeBlockDataTag.isPresent()) {
+            CompoundTag blockDataTag = maybeBlockDataTag.get();
+            @Nullable Tag encodedState = blockDataTag.get(Objects.requireNonNull(clazz));
+            if (encodedState != null) {
+                Optional<Pair<BlockState, Tag>> result = BlockState.CODEC.decode(NbtOps.INSTANCE, encodedState).result();
+                if (result.isPresent()) {
+                    BlockState storedState = result.get().getFirst();
+                    return storedState;
+                }
+            }
+        }
+        return null;
     }
 }
