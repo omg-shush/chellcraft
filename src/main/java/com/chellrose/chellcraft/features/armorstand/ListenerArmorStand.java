@@ -16,7 +16,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -42,7 +42,7 @@ public class ListenerArmorStand {
     }
 
     private @NonNull InteractionResult useEntity(Player player, Level world, InteractionHand hand, Entity entity, @Nullable EntityHitResult hitResult) {
-        if (entity.getType() != EntityType.ARMOR_STAND || !player.isShiftKeyDown() || hand == null) {
+        if (!entity.getType().equals(EntityTypes.ARMOR_STAND) || !player.isShiftKeyDown() || hand == null) {
             return InteractionResult.PASS;
         }
 

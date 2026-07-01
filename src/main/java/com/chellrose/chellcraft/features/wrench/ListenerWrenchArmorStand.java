@@ -12,7 +12,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
@@ -29,7 +29,7 @@ public class ListenerWrenchArmorStand {
         ItemStack stack = player.getItemInHand(hand);
         boolean mainHand = hand.asEquipmentSlot().equals(EquipmentSlot.MAINHAND);
         boolean isWrench = WrenchItem.isWrench(stack);
-        boolean isArmorStand = entity.getType().equals(EntityType.ARMOR_STAND);
+        boolean isArmorStand = entity.getType().equals(EntityTypes.ARMOR_STAND);
         boolean isSneaking = player.isShiftKeyDown();
         if (mainHand && isWrench && isArmorStand && isSneaking) {
             // Cycle to next armor stand pose

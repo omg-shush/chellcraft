@@ -6,7 +6,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.decoration.ItemFrame;
@@ -31,7 +31,7 @@ public class ListenerWashInvis {
         boolean success = false;
 		for (Entity entity : world.getEntitiesOfClass(Entity.class, box, entity -> this.isInRange(potion).test(entity) && this.isWashable().test(entity))) {
             success = true;
-            if (entity.getType() == EntityType.ARMOR_STAND || entity.getType() == EntityType.ITEM_FRAME || entity.getType() == EntityType.GLOW_ITEM_FRAME) {
+            if (entity.getType().equals(EntityTypes.ARMOR_STAND) || entity.getType().equals(EntityTypes.ITEM_FRAME) || entity.getType().equals(EntityTypes.GLOW_ITEM_FRAME)) {
                 entity.setInvisible(false);
             } else if (entity instanceof LivingEntity livingEntity) {
                 if (livingEntity.hasEffect(MobEffects.INVISIBILITY)) {

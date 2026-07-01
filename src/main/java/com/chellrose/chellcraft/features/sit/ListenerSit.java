@@ -30,7 +30,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Entity.RemovalReason;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
@@ -93,8 +93,9 @@ public class ListenerSit {
                     }
                 }
                 if (topFace && !opaqueAbove && support && (validStairs || validSlab || validCampfire || validEndRod)) {
-                    Bee bee = new Bee(EntityType.BEE, world);
-                    bee.setPos(hitResult.getBlockPos().getBottomCenter().add(0.0, DELTA_Y, 0.0));
+                    Bee bee = new Bee(EntityTypes.BEE, world);
+                    BlockPos pos = hitResult.getBlockPos();
+                    bee.setPos(pos.getX() + 0.5, pos.getY() + DELTA_Y, pos.getZ() + 0.5);
                     bee.setYRot((player.getYRot() + 180.0F) % 360.0F);
                     bee.setYBodyRot(bee.getYRot());
                     bee.setYHeadRot(bee.getYRot());
@@ -145,7 +146,7 @@ public class ListenerSit {
     private @NonNull InteractionResult stopping(MinecraftServer server) {
         int count = 0;
         for (ServerLevel world : server.getAllLevels()) {
-            for (Bee entity : world.getEntities(EntityType.BEE, (bee) -> bee.entityTags().contains(SEAT_TAG))) {
+            for (Bee entity : world.getEntities(EntityTypes.BEE, (bee) -> bee.entityTags().contains(SEAT_TAG))) {
                 Objects.requireNonNull(entity).remove(RemovalReason.DISCARDED);
                 count++;
             }
